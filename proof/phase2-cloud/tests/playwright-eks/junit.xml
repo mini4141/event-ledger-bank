@@ -1,0 +1,6 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="17.515981">
+<testsuite name="happy.spec.ts" timestamp="2026-11-25T20:44:55.769Z" hostname="" tests="1" failures="0" skipped="0" time="13.934" errors="0">
+<testcase name="create two customers, deposit, transfer, live feed shows the event" classname="happy.spec.ts" time="13.934">
+</testcase>
+</testsuite>
+</testsuites>

@@ -3,7 +3,7 @@
 set -euo pipefail
 source "$(dirname "$0")/lib.sh"; source "$ROOT/scripts/aws-env.sh"
 cd "$ROOT"
-export BASE_URL="${BASE_URL:-$(cat .local/cloud-url)}"
+export BASE_URL="$(cat .local/cloud-url)"
 P=proof/phase2-cloud; mkdir -p $P/{screenshots,logs,tests/playwright-eks}
 out() { $TF output -raw "$1"; }
 MSK_ARN=$(out msk_cluster_arn); WG=$(out athena_workgroup); DB=$(out glue_database)
@@ -14,8 +14,16 @@ echo "== screenshots + Playwright against the NLB"
 rm -rf $P/tests/playwright-eks/report; cp -r web/playwright-report $P/tests/playwright-eks/report; cp web/test-results/junit.xml $P/tests/playwright-eks/junit.xml
 
 echo "== AWS describe logs"
-aws keyspaces get-keyspace --keyspace-name bank | redact > $P/logs/keyspaces-describe.json
-for t in accounts ledger_entries_by_account; do aws keyspaces get-table --keyspace-name bank --table-name $t | redact >> $P/logs/keyspaces-describe.json; done
+if grep -q "keyspaces=true" .local/deploy-mode; then
+  aws keyspaces get-keyspace --keyspace-name bank | redact > $P/logs/keyspaces-describe.json
+  for t in accounts ledger_entries_by_account; do aws keyspaces get-table --keyspace-name bank --table-name $t | redact >> $P/logs/keyspaces-describe.json; done
+else
+  { echo "Amazon Keyspaces was NOT used: the deployer principal has no cassandra:* permissions."
+    echo "Call result:"; aws keyspaces list-keyspaces 2>&1 || true
+    echo; echo "Fallback: the same services ran against Cassandra 5 inside EKS (config only: CASSANDRA_AUTH=none)."
+    kubectl -n bank exec cassandra-0 -- cqlsh -e "DESCRIBE KEYSPACE bank" 2>&1 | head -60
+    kubectl -n bank exec cassandra-0 -- cqlsh -e "SELECT account_id, balance_minor, version FROM bank.accounts LIMIT 5" 2>&1; } | redact > $P/logs/keyspaces-describe.json
+fi
 aws kafka describe-cluster-v2 --cluster-arn "$MSK_ARN" | redact > $P/logs/msk-describe.json
 { kubectl -n bank get all,jobs -o wide; echo; kubectl get nodes -o wide; echo
   kubectl -n bank logs deploy/ledger --tail=5; kubectl -n bank logs deploy/notifications --tail=5; kubectl -n bank logs deploy/analytics-sink --tail=3; } 2>&1 | redact > $P/logs/kubectl-eks.txt
@@ -43,6 +51,7 @@ LBNAME=$(aws elbv2 describe-load-balancers --query "LoadBalancers[0].LoadBalance
 if [ -n "$LBNAME" ] && [ "$LBNAME" != None ]; then
   aws cloudwatch get-metric-widget-image --output text --query MetricWidgetImage \
     --metric-widget "{\"metrics\":[[\"AWS/NetworkELB\",\"NewFlowCount\",\"LoadBalancer\",\"$LBNAME\"]],\"period\":60,\"stat\":\"Sum\",\"title\":\"NLB new flows\",\"width\":800,\"height\":300,\"start\":\"-PT1H\"}" \
-    | base64 -d > $P/screenshots/04-cloudwatch-nlb-flows.png || true
+    | tr -d "
+ " | base64 -d > $P/screenshots/04-cloudwatch-nlb-flows.png || true
 fi
 echo "proof captured in $P"

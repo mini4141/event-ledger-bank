@@ -105,3 +105,10 @@ resource "aws_cloudwatch_log_group" "eks" {
   retention_in_days = 1
 }
 
+
+# Amazon Keyspaces needs cassandra:* permissions on the deploying principal. When they are missing
+# (see docs/DECISIONS.md) deploy.sh sets this to false and the stack runs Cassandra inside EKS instead.
+variable "enable_keyspaces" {
+  type    = bool
+  default = true
+}

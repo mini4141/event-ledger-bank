@@ -1,0 +1,39 @@
+{
+    "ClusterInfo": {
+        "ClusterType": "SERVERLESS",
+        "ClusterArn": "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1",
+        "ClusterName": "event-ledger-bank",
+        "CreationTime": "2026-11-25T20:12:28.577000+00:00",
+        "CurrentVersion": "K2EUQ1WTGCTBG2",
+        "State": "ACTIVE",
+        "Tags": {
+            "Project": "event-ledger-bank",
+            "Owner": "alvieirvansyah",
+            "ManagedBy": "terraform",
+            "Ephemeral": "true"
+        },
+        "Serverless": {
+            "VpcConfigs": [
+                {
+                    "SubnetIds": [
+                        "subnet-0c12923cc5160b03b",
+                        "subnet-0b606facaa0a06383"
+                    ],
+                    "SecurityGroupIds": [
+                        "sg-03022b9e17222eb58"
+                    ]
+                }
+            ],
+            "ClientAuthentication": {
+                "Sasl": {
+                    "Iam": {
+                        "Enabled": true
+                    }
+                }
+            },
+            "ConnectivityInfo": {
+                "NetworkType": "IPV4"
+            }
+        }
+    }
+}

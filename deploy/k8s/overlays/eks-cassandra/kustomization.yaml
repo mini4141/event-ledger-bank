@@ -1,0 +1,16 @@
+# Fallback for AWS accounts without Keyspaces permissions: same EKS overlay, Cassandra as an in-cluster StatefulSet.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../eks
+  - cassandra.yaml
+configMapGenerator:
+  - name: app-env
+    behavior: merge
+    literals:
+      - CASSANDRA_HOSTS=cassandra
+      - CASSANDRA_AUTH=none
+      - CASSANDRA_TLS=false
+      - CASSANDRA_TLS_CA=
+generatorOptions:
+  disableNameSuffixHash: true

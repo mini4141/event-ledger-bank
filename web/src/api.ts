@@ -16,6 +16,14 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
   return text ? (JSON.parse(text) as T) : ({} as T);
 }
 
+// crypto.randomUUID needs a secure context; the demo NLB is plain HTTP, so fall back to getRandomValues.
+export const uuid = (): string =>
+  typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
+        (Number(c) ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (Number(c) / 4)))).toString(16),
+      );
+
 export const money = (minor: string | number) => (Number(minor) / 100).toFixed(2);
 
 export const api = {
@@ -26,7 +34,7 @@ export const api = {
   account: (id: string) => call<Account>("GET", `/v1/accounts/${id}`),
   entries: (id: string) => call<{ entries?: Entry[] }>("GET", `/v1/accounts/${id}/entries`).then((r) => r.entries ?? []),
   deposit: (account_id: string, amount_minor: number) =>
-    call<Account>("POST", "/v1/deposits", { account_id, amount_minor, idempotency_key: crypto.randomUUID() }),
+    call<Account>("POST", "/v1/deposits", { account_id, amount_minor, idempotency_key: uuid() }),
   transfer: (idempotency_key: string, from_account_id: string, to_account_id: string, amount_minor: number) =>
     call<Transfer>("POST", "/v1/transfers", { idempotency_key, from_account_id, to_account_id, amount_minor }),
   health: (svc: string) => fetch(`/healthz/${svc}`).then((r) => r.ok),

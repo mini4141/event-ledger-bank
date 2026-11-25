@@ -1,0 +1,70 @@
+NAME                                 READY   STATUS      RESTARTS      AGE    IP            NODE                                             NOMINATED NODE   READINESS GATES
+pod/accounts-c7d7789bc-mxxgc         1/1     Running     1 (23m ago)   25m    10.20.0.69    ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/accounts-c7d7789bc-ssxph         1/1     Running     1 (23m ago)   25m    10.20.1.77    ip-10-20-1-91.ap-southeast-2.compute.internal    <none>           <none>
+pod/analytics-sink-fc45f78ff-c7ct6   1/1     Running     0             25m    10.20.0.166   ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/cassandra-0                      1/1     Running     0             25m    10.20.1.83    ip-10-20-1-91.ap-southeast-2.compute.internal    <none>           <none>
+pod/cassandra-schema-gt8cr           0/1     Completed   0             25m    10.20.0.232   ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/envoy-56bcdd5564-fv2wp           1/1     Running     0             25m    10.20.0.162   ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/ledger-7677cb7f96-ld7fd          1/1     Running     1 (23m ago)   25m    10.20.1.17    ip-10-20-1-91.ap-southeast-2.compute.internal    <none>           <none>
+pod/ledger-7677cb7f96-w7snf          1/1     Running     1 (23m ago)   25m    10.20.0.195   ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/notifications-5545989d74-dsf8m   1/1     Running     0             25m    10.20.0.99    ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/topic-init-nvdqz                 0/1     Completed   0             25m    10.20.0.30    ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/transfers-5dbbffc8c7-dr7dt       1/1     Running     1 (23m ago)   25m    10.20.1.197   ip-10-20-1-91.ap-southeast-2.compute.internal    <none>           <none>
+pod/transfers-5dbbffc8c7-kfxf8       1/1     Running     0             25m    10.20.0.209   ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+pod/web-899c59c96-mlddz              1/1     Running     0             2m8s   10.20.0.113   ip-10-20-0-170.ap-southeast-2.compute.internal   <none>           <none>
+
+NAME                     TYPE           CLUSTER-IP       EXTERNAL-IP                                                                          PORT(S)                    AGE   SELECTOR
+service/accounts         ClusterIP      None             <none>                                                                               8080/TCP,9000/TCP          25m   app=accounts
+service/analytics-sink   ClusterIP      172.20.102.102   <none>                                                                               8080/TCP                   25m   app=analytics-sink
+service/cassandra        ClusterIP      None             <none>                                                                               9042/TCP                   25m   app=cassandra
+service/envoy            ClusterIP      172.20.5.40      <none>                                                                               80/TCP,8081/TCP,9901/TCP   25m   app=envoy
+service/envoy-public     LoadBalancer   172.20.39.229    a8bff60570e22438b952d8525ebceb25-bb03b3014fa3958d.elb.ap-southeast-2.amazonaws.com   80:31073/TCP               25m   app=envoy
+service/ledger           ClusterIP      None             <none>                                                                               8080/TCP,9000/TCP          25m   app=ledger
+service/notifications    ClusterIP      172.20.190.214   <none>                                                                               8080/TCP                   25m   app=notifications
+service/transfers        ClusterIP      None             <none>                                                                               8080/TCP,9000/TCP          25m   app=transfers
+service/web              ClusterIP      172.20.105.35    <none>                                                                               80/TCP                     25m   app=web
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS       IMAGES                                                                                      SELECTOR
+deployment.apps/accounts         2/2     2            2           25m   accounts         <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/accounts:latest         app=accounts
+deployment.apps/analytics-sink   1/1     1            1           25m   analytics-sink   <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/analytics-sink:latest   app=analytics-sink
+deployment.apps/envoy            1/1     1            1           25m   envoy            <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/envoy:latest            app=envoy
+deployment.apps/ledger           2/2     2            2           25m   ledger           <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/ledger:latest           app=ledger
+deployment.apps/notifications    1/1     1            1           25m   notifications    <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/notifications:latest    app=notifications
+deployment.apps/transfers        2/2     2            2           25m   transfers        <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/transfers:latest        app=transfers
+deployment.apps/web              1/1     1            1           25m   web              <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/web:latest              app=web
+
+NAME                                       DESIRED   CURRENT   READY   AGE     CONTAINERS       IMAGES                                                                                      SELECTOR
+replicaset.apps/accounts-c7d7789bc         2         2         2       25m     accounts         <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/accounts:latest         app=accounts,pod-template-hash=c7d7789bc
+replicaset.apps/analytics-sink-fc45f78ff   1         1         1       25m     analytics-sink   <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/analytics-sink:latest   app=analytics-sink,pod-template-hash=fc45f78ff
+replicaset.apps/envoy-56bcdd5564           1         1         1       25m     envoy            <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/envoy:latest            app=envoy,pod-template-hash=56bcdd5564
+replicaset.apps/ledger-7677cb7f96          2         2         2       25m     ledger           <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/ledger:latest           app=ledger,pod-template-hash=7677cb7f96
+replicaset.apps/notifications-5545989d74   1         1         1       25m     notifications    <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/notifications:latest    app=notifications,pod-template-hash=5545989d74
+replicaset.apps/transfers-5dbbffc8c7       2         2         2       25m     transfers        <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/transfers:latest        app=transfers,pod-template-hash=5dbbffc8c7
+replicaset.apps/web-5d585bc89              0         0         0       25m     web              <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/web:latest              app=web,pod-template-hash=5d585bc89
+replicaset.apps/web-899c59c96              1         1         1       2m11s   web              <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/web:latest              app=web,pod-template-hash=899c59c96
+
+NAME                         READY   AGE   CONTAINERS   IMAGES
+statefulset.apps/cassandra   1/1     25m   cassandra    cassandra:5.0.4
+
+NAME                         STATUS     COMPLETIONS   DURATION   AGE   CONTAINERS   IMAGES                                                                                  SELECTOR
+job.batch/cassandra-schema   Complete   1/1           93s        25m   cqlsh        cassandra:5.0.4                                                                         batch.kubernetes.io/controller-uid=9d465066-ed00-4fb7-bd88-dffcfffe1e2e
+job.batch/topic-init         Complete   1/1           5s         25m   topic-init   <ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/topic-init:latest   batch.kubernetes.io/controller-uid=3266e595-e800-4e7e-b724-5a628846f65b
+
+NAME                                             STATUS   ROLES    AGE   VERSION               INTERNAL-IP   EXTERNAL-IP     OS-IMAGE                        KERNEL-VERSION                            CONTAINER-RUNTIME
+ip-10-20-0-170.ap-southeast-2.compute.internal   Ready    <none>   32m   v1.36.5-eks-9adbfea   10.20.0.170   3.106.55.241    Amazon Linux 2023.12.20261118   6.18.62-127.179.amzn2023.x86_64 (amd64)   containerd://2.3.7+unknown
+ip-10-20-1-91.ap-southeast-2.compute.internal    Ready    <none>   32m   v1.36.5-eks-9adbfea   10.20.1.91    16.178.48.221   Amazon Linux 2023.12.20261118   6.18.62-127.179.amzn2023.x86_64 (amd64)   containerd://2.3.7+unknown
+
+Found 2 pods, using pod/ledger-7677cb7f96-ld7fd
+{"time":"2026-11-25T20:41:05.14942546Z","level":"INFO","msg":"grpc","service":"ledger","method":"/bank.v1.LedgerService/Post","code":"OK","ms":24}
+{"time":"2026-11-25T20:41:07.123336914Z","level":"INFO","msg":"grpc","service":"ledger","method":"/bank.v1.LedgerService/Post","code":"OK","ms":22}
+{"time":"2026-11-25T20:44:12.632270426Z","level":"INFO","msg":"grpc","service":"ledger","method":"/bank.v1.LedgerService/Post","code":"OK","ms":141}
+{"time":"2026-11-25T20:44:14.638149195Z","level":"INFO","msg":"grpc","service":"ledger","method":"/bank.v1.LedgerService/Post","code":"OK","ms":88}
+{"time":"2026-11-25T20:45:10.532106987Z","level":"INFO","msg":"grpc","service":"ledger","method":"/bank.v1.LedgerService/Post","code":"OK","ms":165}
+{"time":"2026-11-25T20:41:06.150649053Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":1,"offset":31,"key":"4104615d-9200-4167-bb82-4fc2fc73f3f0"}
+{"time":"2026-11-25T20:41:07.130334929Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":1,"offset":32,"key":"9467af69-eadb-4b1d-ac08-e0db6791abb6"}
+{"time":"2026-11-25T20:41:08.143737499Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":0,"offset":16,"key":"0b3223c9-78ad-409c-a801-aedc94b5cab2"}
+{"time":"2026-11-25T20:44:14.69925948Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":1,"offset":33,"key":"dd4d7fb7-77bd-4de3-a3b2-4c4fd5e8fc22"}
+{"time":"2026-11-25T20:45:12.656938079Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":2,"offset":0,"key":"2cf07f68-e056-42f2-a639-18e10323e344"}
+{"time":"2026-11-25T20:44:13.008655137Z","level":"INFO","msg":"flushed","service":"analytics-sink","records":2}
+{"time":"2026-11-25T20:44:18.042018166Z","level":"INFO","msg":"flushed","service":"analytics-sink","records":3}
+{"time":"2026-11-25T20:45:13.099158737Z","level":"INFO","msg":"flushed","service":"analytics-sink","records":5}

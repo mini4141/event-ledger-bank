@@ -39,7 +39,7 @@ scripts/destroy.sh       # remove NLB + namespaces, empty buckets, terraform des
 scripts/verify-destroyed.sh
 ```
 
-Uses the AWS profile `event-ledger-bank-deployer` in `ap-southeast-2`. Everything is tagged `Project=event-ledger-bank`.
+Uses the AWS profile `event-ledger-bank-deployer` in `ap-southeast-2`. Everything is tagged `Project=event-ledger-bank`. If the deployer cannot use Amazon Keyspaces, `deploy.sh` falls back to Cassandra inside EKS (see [docs/DECISIONS.md](docs/DECISIONS.md)).
 
 ## More
 

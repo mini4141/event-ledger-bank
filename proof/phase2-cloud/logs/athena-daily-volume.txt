@@ -1,0 +1,6 @@
+-- daily_volume.sql
+state=SUCCEEDED
+["dt","transfers","volume_gbp","2026-11-25","52","227.5"]
+-- top_accounts.sql
+state=SUCCEEDED
+["from_account_id","transfers","sent_gbp","0b3223c9-78ad-409c-a801-aedc94b5cab2","17","61.2","9467af69-eadb-4b1d-ac08-e0db6791abb6","17","59.5","4104615d-9200-4167-bb82-4fc2fc73f3f0","16","56.8","dd4d7fb7-77bd-4de3-a3b2-4c4fd5e8fc22","1","25.0","2cf07f68-e056-42f2-a639-18e10323e344","1","25.0"]

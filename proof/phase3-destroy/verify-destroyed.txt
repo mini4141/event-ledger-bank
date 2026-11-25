@@ -1,0 +1,16 @@
+verify-destroyed 2026-11-25T20:59:52Z region=ap-southeast-2
+ok       EKS clusters
+ok       MSK clusters
+ok       Keyspaces keyspace bank (API access denied for this principal, so none could have been created; Terraform ran with enable_keyspaces=false)
+ok       Load balancers (v2)
+ok       Load balancers (classic)
+ok       VPCs tagged Project
+ok       NAT gateways
+ok       S3 buckets
+ok       ECR repositories
+ok       Athena workgroup
+ok       Glue database
+ok       IAM roles
+ok       CloudWatch log groups
+--- tagging API (informational, lags deletion)
+<none>

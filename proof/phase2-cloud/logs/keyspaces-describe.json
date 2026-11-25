@@ -1,0 +1,76 @@
+Amazon Keyspaces was NOT used: the deployer principal has no cassandra:* permissions.
+Call result:
+
+aws: [ERROR]: An error occurred (AccessDeniedException) when calling the ListKeyspaces operation: User arn:aws:iam::<ACCOUNT_ID>:user/event-ledger-bank-deployer has no cassandra:Select permission on table keyspaces or any of its parents.
+
+Fallback: the same services ran against Cassandra 5 inside EKS (config only: CASSANDRA_AUTH=none).
+
+CREATE KEYSPACE bank WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
+
+CREATE TABLE bank.accounts (
+    account_id uuid PRIMARY KEY,
+    balance_minor bigint,
+    created_at timestamp,
+    currency text,
+    customer_id uuid,
+    version int
+) WITH additional_write_policy = '99p'
+    AND allow_auto_snapshot = true
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND cdc = false
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '16', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND memtable = 'default'
+    AND crc_check_chance = 1.0
+    AND default_time_to_live = 0
+    AND extensions = {}
+    AND gc_grace_seconds = 864000
+    AND incremental_backups = true
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair = 'BLOCKING'
+    AND speculative_retry = '99p';
+
+CREATE TABLE bank.accounts_by_customer (
+    customer_id uuid,
+    account_id uuid,
+    PRIMARY KEY (customer_id, account_id)
+) WITH CLUSTERING ORDER BY (account_id ASC)
+    AND additional_write_policy = '99p'
+    AND allow_auto_snapshot = true
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND cdc = false
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '16', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND memtable = 'default'
+    AND crc_check_chance = 1.0
+    AND default_time_to_live = 0
+    AND extensions = {}
+    AND gc_grace_seconds = 864000
+    AND incremental_backups = true
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair = 'BLOCKING'
+    AND speculative_retry = '99p';
+
+CREATE TABLE bank.customers (
+    customer_id uuid PRIMARY KEY,
+    created_at timestamp,
+    name text
+) WITH additional_write_policy = '99p'
+
+ account_id                           | balance_minor | version
+--------------------------------------+---------------+---------
+ 00000000-0000-0000-0000-00000000f00d |       -320000 |       5
+ 2cf07f68-e056-42f2-a639-18e10323e344 |          7500 |       2
+ 6f3a725d-98a4-4a17-bca2-1ea0b975fe8c |             0 |       0
+ 0b3223c9-78ad-409c-a801-aedc94b5cab2 |         99830 |      35
+ a7024673-69d3-4cf7-816a-1503298d4490 |          2500 |       1
+
+(5 rows)

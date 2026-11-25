@@ -1,0 +1,86 @@
+# terraform outputs
+athena_bucket = "event-ledger-bank-athena-<ACCOUNT_ID>"
+athena_workgroup = "event-ledger-bank"
+cluster_name = "event-ledger-bank"
+data_bucket = "event-ledger-bank-data-<ACCOUNT_ID>"
+ecr_registry = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank"
+eks_log_group = "/aws/eks/event-ledger-bank/cluster"
+glue_database = "bank"
+keyspaces_keyspace = "disabled (in-cluster Cassandra)"
+msk_cluster_arn = "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1"
+region = "ap-southeast-2"
+vpc_id = "vpc-0dffe23064a286bfb"
+
+# terraform state resources
+data.aws_availability_zones.az
+data.aws_caller_identity.me
+data.aws_iam_policy_document.app
+data.aws_iam_policy_document.eks_assume
+data.aws_iam_policy_document.node_assume
+data.aws_iam_policy_document.pods_assume
+aws_athena_workgroup.bank
+aws_cloudwatch_log_group.eks
+aws_ecr_repository.svc["accounts"]
+aws_ecr_repository.svc["analytics-sink"]
+aws_ecr_repository.svc["envoy"]
+aws_ecr_repository.svc["ledger"]
+aws_ecr_repository.svc["notifications"]
+aws_ecr_repository.svc["topic-init"]
+aws_ecr_repository.svc["transfers"]
+aws_ecr_repository.svc["web"]
+aws_eks_addon.pod_identity
+aws_eks_cluster.this
+aws_eks_node_group.spot
+aws_eks_pod_identity_association.app
+aws_glue_catalog_database.bank
+aws_glue_catalog_table.events
+aws_iam_role.app
+aws_iam_role.cluster
+aws_iam_role.node
+aws_iam_role_policy.app
+aws_iam_role_policy_attachment.cluster
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]
+aws_internet_gateway.igw
+aws_msk_serverless_cluster.this
+aws_route_table.public
+aws_route_table_association.public[0]
+aws_route_table_association.public[1]
+aws_s3_bucket.athena
+aws_s3_bucket.data
+aws_s3_bucket_public_access_block.block["athena"]
+aws_s3_bucket_public_access_block.block["data"]
+aws_security_group.msk
+aws_subnet.public[0]
+aws_subnet.public[1]
+aws_vpc.main
+
+# tagged resources
+arn:aws:athena:ap-southeast-2:<ACCOUNT_ID>:workgroup/event-ledger-bank
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:internet-gateway/igw-0cdc0d2e18b664323
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-0bfa8cebf10ca74a0
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-03022b9e17222eb58
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0b606facaa0a06383
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0c12923cc5160b03b
+arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:vpc/vpc-0dffe23064a286bfb
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/accounts
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/analytics-sink
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/envoy
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/ledger
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/notifications
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/topic-init
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/transfers
+arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/web
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:addon/event-ledger-bank/eks-pod-identity-agent/d0d10a2c-2e32-5cb6-bda3-5542895348fa
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:nodegroup/event-ledger-bank/spot/d4d10a2b-3911-36c3-5d34-e5288d5dc450
+arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:podidentityassociation/event-ledger-bank/a-utrgtlrplhdjezihs
+arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:listener/net/a8bff60570e22438b952d8525ebceb25/bb03b3014fa3958d/e34ff049a4f357c6
+arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:loadbalancer/net/a8bff60570e22438b952d8525ebceb25/bb03b3014fa3958d
+arn:aws:elasticloadbalancing:ap-southeast-2:<ACCOUNT_ID>:targetgroup/k8s-bank-envoypub-9ccb88764d/9a0608f902bfe560
+arn:aws:glue:ap-southeast-2:<ACCOUNT_ID>:database/bank
+arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1
+arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/aws/eks/event-ledger-bank/cluster
+arn:aws:s3:::event-ledger-bank-athena-<ACCOUNT_ID>
+arn:aws:s3:::event-ledger-bank-data-<ACCOUNT_ID>

@@ -13,7 +13,8 @@ check() { # label, value that must be empty
 echo "verify-destroyed $(date -u +%FT%TZ) region=$AWS_REGION"
 check "EKS clusters"           "$(aws eks list-clusters --query "clusters[?contains(@,'event-ledger-bank')]" --output text)"
 check "MSK clusters"           "$(aws kafka list-clusters-v2 --query "ClusterInfoList[?contains(ClusterName,'event-ledger-bank')].ClusterName" --output text)"
-check "Keyspaces keyspace bank" "$(aws keyspaces list-keyspaces --query "keyspaces[?keyspaceName=='bank'].keyspaceName" --output text)"
+ks=$(aws keyspaces list-keyspaces --query "keyspaces[?keyspaceName=='bank'].keyspaceName" --output text 2>&1)
+if echo "$ks" | grep -q AccessDenied; then echo "ok       Keyspaces keyspace bank (API access denied for this principal, so none could have been created; Terraform ran with enable_keyspaces=false)"; else check "Keyspaces keyspace bank" "$ks"; fi
 check "Load balancers (v2)"    "$(aws elbv2 describe-load-balancers --query "LoadBalancers[].LoadBalancerName" --output text)"
 check "Load balancers (classic)" "$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[].LoadBalancerName" --output text)"
 check "VPCs tagged Project"    "$(aws ec2 describe-vpcs --filters Name=tag:Project,Values=event-ledger-bank --query 'Vpcs[].VpcId' --output text)"

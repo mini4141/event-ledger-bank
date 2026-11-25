@@ -1,17 +1,19 @@
 # PROGRESS
 
-Resume from here if the session restarts. Current phase: **2 (AWS deploy started 2026-11-26 ~03:05 local; destroy within 2h)**.
+Resume from here if the session restarts. Current phase: **4 done: all phases complete (see below)**
+
+> **Phase 2 note:** Keyspaces is denied for the deployer principal, so AWS runs Cassandra in EKS (see docs/DECISIONS.md).
 
 ## Coverage matrix (SPECS §2)
 - [x] Backend / distributed systems / resilience (5 Go services, idempotency, Envoy retries + outlier detection)
 - [x] Go (all services)
-- [x] Cassandra (cqlsh proof) [ ] Keyspaces (describe)
-- [x] Kafka async (consumer logs) [ ] MSK Serverless
-- [x] Kubernetes + Docker (kind) [ ] EKS
+- [x] Cassandra (cqlsh proof); Keyspaces blocked by IAM (see DECISIONS), code path is config-only
+- [x] Kafka async (consumer logs) + MSK Serverless
+- [x] Kubernetes + Docker (kind) + EKS
 - [x] Envoy for RPC (admin /clusters dump)
-- [ ] AWS production infra (resources.txt, Athena result)
+- [x] AWS production infra (EKS, MSK, S3, Athena; resources.txt, Athena result)
 - [x] React internal tools (`web/`)
-- [x] Analytics sink (DuckDB) [ ] Athena
+- [x] Analytics sink (DuckDB) + Athena
 
 ## Phase 0 scaffold
 - [x] Repo layout, README, PROGRESS, DECISIONS, .gitignore, .gitattributes, .env.example, CI workflow
@@ -26,12 +28,12 @@ Resume from here if the session restarts. Current phase: **2 (AWS deploy started
 - [x] CI green on main, proof index complete
 
 ## Phase 2 AWS (SPECS §10)
-- [ ] screenshots 01-eks-feed, 02-eks-account, 03-eks-system
-- [ ] logs: keyspaces-describe.json, msk-describe.json, athena-daily-volume.txt, kubectl-eks.txt, resources.txt
-- [ ] tests/playwright-eks/
+- [x] screenshots 01-eks-feed, 02-eks-account, 03-eks-system (+ 04 CloudWatch NLB graph)
+- [x] logs: keyspaces-describe.json (Keyspaces denied: in-cluster Cassandra fallback), msk-describe.json, athena-daily-volume.txt, kubectl-eks.txt, resources.txt
+- [x] tests/playwright-eks/
 
 ## Phase 3 destroy (SPECS §11)
-- [ ] destroy.sh run, verify-destroyed.txt clean
+- [x] destroy.sh run (37 resources destroyed), verify-destroyed.txt clean
 
 ## Phase 4 write-up
-- [ ] docs/PORTFOLIO.md, README final
+- [x] docs/PORTFOLIO.md, README final

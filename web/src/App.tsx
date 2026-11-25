@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { api, money, type Account, type Customer, type Entry, type FeedEvent, type Transfer } from "./api";
+import { api, money, uuid, type Account, type Customer, type Entry, type FeedEvent, type Transfer } from "./api";
 
 type Page = "customers" | "account" | "transfer" | "feed" | "system";
 const short = (id: string) => id.slice(0, 8);
@@ -94,7 +94,7 @@ function TransferForm({ rows, onDone }: { rows: Row[]; onDone: () => void }) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("25.00");
-  const [key, setKey] = useState(() => crypto.randomUUID());
+  const [key, setKey] = useState(() => uuid());
   const [res, setRes] = useState<Transfer>();
   const [err, setErr] = useState("");
   const submit = async () => {
@@ -118,7 +118,7 @@ function TransferForm({ rows, onDone }: { rows: Row[]; onDone: () => void }) {
         </select>
         <input data-testid="amount" value={amount} onChange={(e) => setAmount(e.target.value)} size={8} />
         <button className="primary" data-testid="submit-transfer" disabled={!from || !to} onClick={submit}>Send</button>
-        <button className="small" onClick={() => setKey(crypto.randomUUID())}>New idempotency key</button>
+        <button className="small" onClick={() => setKey(uuid())}>New idempotency key</button>
       </div>
       <p className="mono">idempotency key: {key} (submit twice with the same key to see the replay)</p>
       {res && <p data-testid="transfer-result">Transfer <span className="mono">{res.transfer_id}</span> — {res.status}{res.replayed ? " (replayed, no double spend)" : ""}</p>}

@@ -103,13 +103,16 @@ resource "aws_iam_role" "app" {
 }
 
 data "aws_iam_policy_document" "app" {
-  statement {
-    sid     = "KeyspacesData"
-    actions = ["cassandra:Select", "cassandra:Modify"]
-    resources = [
-      "arn:aws:cassandra:${var.region}:${local.account_id}:/keyspace/${aws_keyspaces_keyspace.bank.name}/table/*",
-      "arn:aws:cassandra:${var.region}:${local.account_id}:/keyspace/system*",
-    ]
+  dynamic "statement" {
+    for_each = var.enable_keyspaces ? [1] : []
+    content {
+      sid     = "KeyspacesData"
+      actions = ["cassandra:Select", "cassandra:Modify"]
+      resources = [
+        "arn:aws:cassandra:${var.region}:${local.account_id}:/keyspace/bank/table/*",
+        "arn:aws:cassandra:${var.region}:${local.account_id}:/keyspace/system*",
+      ]
+    }
   }
   statement {
     sid = "MskIam"

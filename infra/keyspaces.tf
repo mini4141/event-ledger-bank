@@ -1,7 +1,8 @@
 # Same tables as db/cql/schema.cql. Keyspaces creates tables asynchronously, so Terraform owns DDL
 # and the services never run it in AWS.
 resource "aws_keyspaces_keyspace" "bank" {
-  name = "bank"
+  count = var.enable_keyspaces ? 1 : 0
+  name  = "bank"
 }
 
 locals {
@@ -46,8 +47,8 @@ locals {
 }
 
 resource "aws_keyspaces_table" "t" {
-  for_each      = local.keyspaces_tables
-  keyspace_name = aws_keyspaces_keyspace.bank.name
+  for_each      = var.enable_keyspaces ? local.keyspaces_tables : {}
+  keyspace_name = aws_keyspaces_keyspace.bank[0].name
   table_name    = each.key
 
   schema_definition {

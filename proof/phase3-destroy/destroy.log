@@ -1,0 +1,1521 @@
+== delete NLB service and namespaces
+service "envoy-public" deleted from bank namespace
+namespace "bank" deleted
+== wait for load balancers in the VPC to disappear
+== empty S3 buckets, delete ECR images
+== terraform destroy
+data.aws_iam_policy_document.pods_assume: Reading...
+data.aws_caller_identity.me: Reading...
+data.aws_iam_policy_document.eks_assume: Reading...
+aws_ecr_repository.svc["web"]: Refreshing state... [id=event-ledger-bank/web]
+data.aws_availability_zones.az: Reading...
+aws_ecr_repository.svc["topic-init"]: Refreshing state... [id=event-ledger-bank/topic-init]
+aws_ecr_repository.svc["envoy"]: Refreshing state... [id=event-ledger-bank/envoy]
+aws_vpc.main: Refreshing state... [id=vpc-0dffe23064a286bfb]
+aws_ecr_repository.svc["analytics-sink"]: Refreshing state... [id=event-ledger-bank/analytics-sink]
+data.aws_iam_policy_document.pods_assume: Read complete after 0s [id=819195744]
+aws_ecr_repository.svc["ledger"]: Refreshing state... [id=event-ledger-bank/ledger]
+data.aws_iam_policy_document.eks_assume: Read complete after 0s [id=3552664922]
+aws_ecr_repository.svc["transfers"]: Refreshing state... [id=event-ledger-bank/transfers]
+aws_ecr_repository.svc["notifications"]: Refreshing state... [id=event-ledger-bank/notifications]
+data.aws_caller_identity.me: Read complete after 0s [id=<ACCOUNT_ID>]
+aws_ecr_repository.svc["accounts"]: Refreshing state... [id=event-ledger-bank/accounts]
+data.aws_availability_zones.az: Read complete after 1s [id=ap-southeast-2]
+aws_cloudwatch_log_group.eks: Refreshing state... [id=/aws/eks/event-ledger-bank/cluster]
+data.aws_iam_policy_document.node_assume: Reading...
+data.aws_iam_policy_document.node_assume: Read complete after 0s [id=2851119427]
+aws_glue_catalog_database.bank: Refreshing state... [id=<ACCOUNT_ID>:bank]
+aws_iam_role.app: Refreshing state... [id=event-ledger-bank-app]
+aws_iam_role.cluster: Refreshing state... [id=event-ledger-bank-cluster]
+aws_iam_role.node: Refreshing state... [id=event-ledger-bank-node]
+aws_s3_bucket.data: Refreshing state... [id=event-ledger-bank-data-<ACCOUNT_ID>]
+aws_s3_bucket.athena: Refreshing state... [id=event-ledger-bank-athena-<ACCOUNT_ID>]
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]: Refreshing state... [id=event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]: Refreshing state... [id=event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]: Refreshing state... [id=event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+aws_iam_role_policy_attachment.cluster: Refreshing state... [id=event-ledger-bank-cluster/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+aws_subnet.public[0]: Refreshing state... [id=subnet-0c12923cc5160b03b]
+aws_internet_gateway.igw: Refreshing state... [id=igw-0cdc0d2e18b664323]
+aws_subnet.public[1]: Refreshing state... [id=subnet-0b606facaa0a06383]
+aws_athena_workgroup.bank: Refreshing state... [id=event-ledger-bank]
+aws_s3_bucket_public_access_block.block["data"]: Refreshing state... [id=event-ledger-bank-data-<ACCOUNT_ID>]
+aws_s3_bucket_public_access_block.block["athena"]: Refreshing state... [id=event-ledger-bank-athena-<ACCOUNT_ID>]
+aws_glue_catalog_table.events: Refreshing state... [id=<ACCOUNT_ID>:bank:events]
+aws_route_table.public: Refreshing state... [id=rtb-0bfa8cebf10ca74a0]
+aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0c419f057c553413d]
+aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-06b09ddd5a1361240]
+aws_eks_cluster.this: Refreshing state... [id=event-ledger-bank]
+aws_security_group.msk: Refreshing state... [id=sg-03022b9e17222eb58]
+aws_eks_node_group.spot: Refreshing state... [id=event-ledger-bank:spot]
+aws_msk_serverless_cluster.this: Refreshing state... [id=arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1]
+aws_eks_addon.pod_identity: Refreshing state... [id=event-ledger-bank:eks-pod-identity-agent]
+aws_eks_pod_identity_association.app: Refreshing state... [id=a-utrgtlrplhdjezihs]
+data.aws_iam_policy_document.app: Reading...
+data.aws_iam_policy_document.app: Read complete after 0s [id=207118522]
+aws_iam_role_policy.app: Refreshing state... [id=event-ledger-bank-app:app]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_athena_workgroup.bank will be destroyed
+  - resource "aws_athena_workgroup" "bank" {
+      - arn           = "arn:aws:athena:ap-southeast-2:<ACCOUNT_ID>:workgroup/event-ledger-bank" -> null
+      - force_destroy = true -> null
+      - id            = "event-ledger-bank" -> null
+      - name          = "event-ledger-bank" -> null
+      - region        = "ap-southeast-2" -> null
+      - state         = "ENABLED" -> null
+      - tags          = {} -> null
+      - tags_all      = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+        # (1 unchanged attribute hidden)
+
+      - configuration {
+          - bytes_scanned_cutoff_per_query          = 1073741824 -> null
+          - enable_minimum_encryption_configuration = false -> null
+          - enforce_workgroup_configuration         = true -> null
+          - publish_cloudwatch_metrics_enabled      = true -> null
+          - requester_pays_enabled                  = false -> null
+            # (1 unchanged attribute hidden)
+
+          - engine_version {
+              - effective_engine_version = "Athena engine version 3" -> null
+              - selected_engine_version  = "AUTO" -> null
+            }
+
+          - result_configuration {
+              - output_location       = "s3://event-ledger-bank-athena-<ACCOUNT_ID>/results/" -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+    }
+
+  # aws_cloudwatch_log_group.eks will be destroyed
+  - resource "aws_cloudwatch_log_group" "eks" {
+      - arn                         = "arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/aws/eks/event-ledger-bank/cluster" -> null
+      - deletion_protection_enabled = false -> null
+      - id                          = "/aws/eks/event-ledger-bank/cluster" -> null
+      - log_group_class             = "STANDARD" -> null
+      - name                        = "/aws/eks/event-ledger-bank/cluster" -> null
+      - region                      = "ap-southeast-2" -> null
+      - retention_in_days           = 1 -> null
+      - skip_destroy                = false -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # aws_ecr_repository.svc["accounts"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/accounts" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/accounts" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/accounts" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/accounts" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_ecr_repository.svc["analytics-sink"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/analytics-sink" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/analytics-sink" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/analytics-sink" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/analytics-sink" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_ecr_repository.svc["envoy"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/envoy" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/envoy" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/envoy" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/envoy" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_ecr_repository.svc["ledger"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/ledger" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/ledger" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/ledger" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/ledger" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_ecr_repository.svc["notifications"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/notifications" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/notifications" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/notifications" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/notifications" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_ecr_repository.svc["topic-init"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/topic-init" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/topic-init" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/topic-init" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/topic-init" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_ecr_repository.svc["transfers"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/transfers" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/transfers" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/transfers" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/transfers" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_ecr_repository.svc["web"] will be destroyed
+  - resource "aws_ecr_repository" "svc" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/event-ledger-bank/web" -> null
+      - force_delete         = true -> null
+      - id                   = "event-ledger-bank/web" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "event-ledger-bank/web" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank/web" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_eks_addon.pod_identity will be destroyed
+  - resource "aws_eks_addon" "pod_identity" {
+      - addon_name               = "eks-pod-identity-agent" -> null
+      - addon_version            = "v1.4.1-eksbuild.3" -> null
+      - arn                      = "arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:addon/event-ledger-bank/eks-pod-identity-agent/d0d10a2c-2e32-5cb6-bda3-5542895348fa" -> null
+      - cluster_name             = "event-ledger-bank" -> null
+      - created_at               = "2026-11-25T20:14:25Z" -> null
+      - id                       = "event-ledger-bank:eks-pod-identity-agent" -> null
+      - modified_at              = "2026-11-25T20:14:50Z" -> null
+      - region                   = "ap-southeast-2" -> null
+      - tags                     = {} -> null
+      - tags_all                 = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+    }
+
+  # aws_eks_cluster.this will be destroyed
+  - resource "aws_eks_cluster" "this" {
+      - arn                           = "arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank" -> null
+      - bootstrap_self_managed_addons = true -> null
+      - certificate_authority         = [
+          - {
+              - data = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURNVENDQWhtZ0F3SUJBZ0lRZUx4UDV6RlB4Q3UwU1cvcStuRk5KVEFOQmdrcWhraUc5dzBCQVFzRkFEQW4KTVJBd0RnWURWUVFLRXdkQlYxTWdSVXRUTVJNd0VRWURWUVFERXdwcmRXSmxjbTVsZEdWek1CNFhEVEkyTVRFeQpOVEl3TURVeU0xb1hEVE14TVRFeU5ESXdNRFV5TTFvd0p6RVFNQTRHQTFVRUNoTUhRVmRUSUVWTFV6RVRNQkVHCkExVUVBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUIKQVBNQjJHSHpDWVRrM2N4VzBYdkVPOGpEeHFNTFRpRFZPVkh3bkpHb1JYSnFYMk9Pb0orckVBTndTbFZySkdCRApKOS9OZ2FtemsySE5hVCtXNXREeE9vTnNuRW12VG1SWHBqVXZFbHJNSk51cU5oZDZWUUdXT0JVRzAwbk5FSTBWCk5WQ3lmaUdlNGdaN1c4RCtSZnUrc0pja3hGK3lrVFRadDFhY3JQTHo2bzQvMWVsSndjSW56ZlFDKzVHK2FsR1cKOWxuaDRRSUJ4TUxySVo2N2ZrdlRiSnVGdC8zUkFHUFB3NGM3czAyMEptYTVwNUpTbldGKzl5aTJ2WVNpWFpIQgpNb3N2cnhsNElvaVlPSHdSTGdDeW1FSE8rbi9IeUJVUHpzS202bENUSE1GZkVXbmgwb1diR0l5QTlUb3BrQnhEClgzNzlGT2dxMnBNdnJvODJ1L0pQUlZFQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWQKRXdFQi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZEck9KcUdNcEVOOEdoZUZDcFhVQXE1T2JqN3pNQlVHQTFVZApFUVFPTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBR1NrUXU0dHNXaG5jMDh6Cm9STW5nK2lFVVJkcG0yV09BTWdPRzN6TE5vZytUZjdKUUFXRkt3Wk5GYWtPaGkwZEhxYXgwRE9tRmdHY1JtSUMKeVV1LzBYaDZmTTBJTlRQbmpmd2I0YllLUXdnbDRKdFVzaGduVldKU0Z1L2pGK0psYkcrd1lsYWY5UW0xS2RHSgpTcUVUaWhxL3YzK3RPYW9jTGcyclc1Qm1kMEwvMmNJNFpxWVQ0Ui9jaGtMeXBGNjBjYUtCMnA0endLMEplbkFBClErUklGaDQ3UkM0bGdpUEJ5QndaWUdTWlBOVStLbUorOUdKa2xNRlJkZ011eUgyZlFHMlZzMVo1RlgwZC8rOWgKY0hQeWxGdWN5RjY5RUNLZm9uSUU4d0JBSjRmZmJBcFc1SzQxSlp4WUxteXVIMWdMandEVTJaQ0NmSm9GV3RvTgpiWTcrQ3Y0PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+            },
+        ] -> null
+      - created_at                    = "2026-11-25T20:05:12Z" -> null
+      - deletion_protection           = false -> null
+      - enabled_cluster_log_types     = [
+          - "api",
+        ] -> null
+      - endpoint                      = "https://348217BF81ACEA0EDF2F068CA0744394.gr7.ap-southeast-2.eks.amazonaws.com" -> null
+      - id                            = "event-ledger-bank" -> null
+      - identity                      = [
+          - {
+              - oidc = [
+                  - {
+                      - issuer = "https://oidc.eks.ap-southeast-2.amazonaws.com/id/348217BF81ACEA0EDF2F068CA0744394"
+                    },
+                ]
+            },
+        ] -> null
+      - name                          = "event-ledger-bank" -> null
+      - platform_version              = "eks.19" -> null
+      - region                        = "ap-southeast-2" -> null
+      - role_arn                      = "arn:aws:iam::<ACCOUNT_ID>:role/event-ledger-bank-cluster" -> null
+      - status                        = "ACTIVE" -> null
+      - tags                          = {} -> null
+      - tags_all                      = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - version                       = "1.36" -> null
+
+      - access_config {
+          - authentication_mode                         = "API_AND_CONFIG_MAP" -> null
+          - bootstrap_cluster_creator_admin_permissions = true -> null
+        }
+
+      - compute_config {
+          - enabled       = false -> null
+          - node_pools    = [] -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - control_plane_scaling_config {
+          - tier = "standard" -> null
+        }
+
+      - kube_api_server_config {
+          - event_ttl = "60m" -> null
+
+          - service_node_port_range {
+              - max_port = 32767 -> null
+              - min_port = 30000 -> null
+            }
+        }
+
+      - kube_controller_manager_config {
+          - horizontal_pod_autoscaler_controller_config {
+              - horizontal_pod_autoscaler_sync_period = "15s" -> null
+            }
+          - pod_gc_controller_config {
+              - terminated_pod_gc_threshold = 12500 -> null
+            }
+        }
+
+      - kube_scheduler_config {
+          - node_resources_fit {
+              - scoring_strategy {
+                  - type = "LeastAllocated" -> null
+
+                  - resource {
+                      - name   = "cpu" -> null
+                      - weight = 1 -> null
+                    }
+                  - resource {
+                      - name   = "memory" -> null
+                      - weight = 1 -> null
+                    }
+                }
+            }
+        }
+
+      - kubernetes_network_config {
+          - ip_family         = "ipv4" -> null
+          - service_ipv4_cidr = "172.20.0.0/16" -> null
+            # (1 unchanged attribute hidden)
+
+          - elastic_load_balancing {
+              - enabled = false -> null
+            }
+        }
+
+      - storage_config {
+          - block_storage {
+              - enabled = false -> null
+            }
+        }
+
+      - upgrade_policy {
+          - support_type = "EXTENDED" -> null
+        }
+
+      - vpc_config {
+          - cluster_security_group_id = "sg-02d58c37402a3af54" -> null
+          - control_plane_egress_mode = "AWS_MANAGED" -> null
+          - endpoint_private_access   = false -> null
+          - endpoint_public_access    = true -> null
+          - public_access_cidrs       = [
+              - "0.0.0.0/0",
+            ] -> null
+          - security_group_ids        = [] -> null
+          - subnet_ids                = [
+              - "subnet-0b606facaa0a06383",
+              - "subnet-0c12923cc5160b03b",
+            ] -> null
+          - vpc_id                    = "vpc-0dffe23064a286bfb" -> null
+        }
+    }
+
+  # aws_eks_node_group.spot will be destroyed
+  - resource "aws_eks_node_group" "spot" {
+      - ami_type               = "AL2023_x86_64_STANDARD" -> null
+      - arn                    = "arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:nodegroup/event-ledger-bank/spot/d4d10a2b-3911-36c3-5d34-e5288d5dc450" -> null
+      - capacity_type          = "SPOT" -> null
+      - cluster_name           = "event-ledger-bank" -> null
+      - disk_size              = 20 -> null
+      - id                     = "event-ledger-bank:spot" -> null
+      - instance_types         = [
+          - "t3.medium",
+          - "t3a.medium",
+        ] -> null
+      - labels                 = {} -> null
+      - node_group_name        = "spot" -> null
+      - node_role_arn          = "arn:aws:iam::<ACCOUNT_ID>:role/event-ledger-bank-node" -> null
+      - region                 = "ap-southeast-2" -> null
+      - release_version        = "1.36.5-20261119" -> null
+      - resources              = [
+          - {
+              - autoscaling_groups              = [
+                  - {
+                      - name = "eks-spot-d4d10a2b-3911-36c3-5d34-e5288d5dc450"
+                    },
+                ]
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - status                 = "ACTIVE" -> null
+      - subnet_ids             = [
+          - "subnet-0b606facaa0a06383",
+          - "subnet-0c12923cc5160b03b",
+        ] -> null
+      - tags                   = {} -> null
+      - tags_all               = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - version                = "1.36" -> null
+        # (1 unchanged attribute hidden)
+
+      - scaling_config {
+          - desired_size = 2 -> null
+          - max_size     = 2 -> null
+          - min_size     = 2 -> null
+        }
+
+      - update_config {
+          - max_unavailable            = 1 -> null
+          - max_unavailable_percentage = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # aws_eks_pod_identity_association.app will be destroyed
+  - resource "aws_eks_pod_identity_association" "app" {
+      - association_arn      = "arn:aws:eks:ap-southeast-2:<ACCOUNT_ID>:podidentityassociation/event-ledger-bank/a-utrgtlrplhdjezihs" -> null
+      - association_id       = "a-utrgtlrplhdjezihs" -> null
+      - cluster_name         = "event-ledger-bank" -> null
+      - disable_session_tags = false -> null
+      - id                   = "a-utrgtlrplhdjezihs" -> null
+      - namespace            = "bank" -> null
+      - region               = "ap-southeast-2" -> null
+      - role_arn             = "arn:aws:iam::<ACCOUNT_ID>:role/event-ledger-bank-app" -> null
+      - service_account      = "bank" -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+    }
+
+  # aws_glue_catalog_database.bank will be destroyed
+  - resource "aws_glue_catalog_database" "bank" {
+      - arn          = "arn:aws:glue:ap-southeast-2:<ACCOUNT_ID>:database/bank" -> null
+      - catalog_id   = "<ACCOUNT_ID>" -> null
+      - id           = "<ACCOUNT_ID>:bank" -> null
+      - name         = "bank" -> null
+      - parameters   = {} -> null
+      - region       = "ap-southeast-2" -> null
+      - tags         = {} -> null
+      - tags_all     = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - create_table_default_permission {
+          - permissions = [
+              - "ALL",
+            ] -> null
+
+          - principal {
+              - data_lake_principal_identifier = "IAM_ALLOWED_PRINCIPALS" -> null
+            }
+        }
+    }
+
+  # aws_glue_catalog_table.events will be destroyed
+  - resource "aws_glue_catalog_table" "events" {
+      - arn                = "arn:aws:glue:ap-southeast-2:<ACCOUNT_ID>:table/bank/events" -> null
+      - catalog_id         = "<ACCOUNT_ID>" -> null
+      - database_name      = "bank" -> null
+      - id                 = "<ACCOUNT_ID>:bank:events" -> null
+      - name               = "events" -> null
+      - parameters         = {
+          - "EXTERNAL"                    = "TRUE"
+          - "classification"              = "json"
+          - "projection.dt.format"        = "yyyy-MM-dd"
+          - "projection.dt.interval"      = "1"
+          - "projection.dt.interval.unit" = "DAYS"
+          - "projection.dt.range"         = "2026-01-01,NOW"
+          - "projection.dt.type"          = "date"
+          - "projection.enabled"          = "true"
+          - "projection.hour.digits"      = "2"
+          - "projection.hour.range"       = "0,23"
+          - "projection.hour.type"        = "integer"
+          - "storage.location.template"   = "s3://event-ledger-bank-data-<ACCOUNT_ID>/events/dt=${dt}/hour=${hour}"
+        } -> null
+      - region             = "ap-southeast-2" -> null
+      - retention          = 0 -> null
+      - table_type         = "EXTERNAL_TABLE" -> null
+        # (4 unchanged attributes hidden)
+
+      - partition_keys {
+          - name       = "dt" -> null
+          - parameters = {} -> null
+          - type       = "string" -> null
+            # (1 unchanged attribute hidden)
+        }
+      - partition_keys {
+          - name       = "hour" -> null
+          - parameters = {} -> null
+          - type       = "string" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - storage_descriptor {
+          - additional_locations      = [] -> null
+          - bucket_columns            = [] -> null
+          - compressed                = false -> null
+          - input_format              = "org.apache.hadoop.mapred.TextInputFormat" -> null
+          - location                  = "s3://event-ledger-bank-data-<ACCOUNT_ID>/events/" -> null
+          - number_of_buckets         = 0 -> null
+          - output_format             = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat" -> null
+          - parameters                = {} -> null
+          - stored_as_sub_directories = false -> null
+
+          - columns {
+              - name       = "account_id" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "amount_minor" -> null
+              - parameters = {} -> null
+              - type       = "bigint" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "counterparty" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "direction" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "from_account_id" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "key" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "occurred_at" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "posting_id" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "reason" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "to_account_id" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "topic" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "transfer_id" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+
+          - ser_de_info {
+                name                  = null
+              - parameters            = {
+                  - "ignore.malformed.json" = "true"
+                } -> null
+              - serialization_library = "org.openx.data.jsonserde.JsonSerDe" -> null
+            }
+        }
+    }
+
+  # aws_iam_role.app will be destroyed
+  - resource "aws_iam_role" "app" {
+      - arn                   = "arn:aws:iam::<ACCOUNT_ID>:role/event-ledger-bank-app" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = [
+                          - "sts:TagSession",
+                          - "sts:AssumeRole",
+                        ]
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "pods.eks.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-11-25T20:04:48Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "event-ledger-bank-app" -> null
+      - managed_policy_arns   = [] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "event-ledger-bank-app" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - unique_id             = "AROATSY6JMAK5OXH43JCL" -> null
+        # (3 unchanged attributes hidden)
+
+      - inline_policy {
+          - name   = "app" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = [
+                              - "kafka-cluster:WriteData",
+                              - "kafka-cluster:ReadData",
+                              - "kafka-cluster:DescribeTopic",
+                              - "kafka-cluster:DescribeGroup",
+                              - "kafka-cluster:DescribeCluster",
+                              - "kafka-cluster:CreateTopic",
+                              - "kafka-cluster:Connect",
+                              - "kafka-cluster:AlterGroup",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = [
+                              - "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:topic/event-ledger-bank/*",
+                              - "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:group/event-ledger-bank/*",
+                              - "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1",
+                            ]
+                          - Sid      = "MskIam"
+                        },
+                      - {
+                          - Action   = [
+                              - "s3:PutObject",
+                              - "s3:AbortMultipartUpload",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::event-ledger-bank-data-<ACCOUNT_ID>/*"
+                          - Sid      = "SinkBucket"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+    }
+
+  # aws_iam_role.cluster will be destroyed
+  - resource "aws_iam_role" "cluster" {
+      - arn                   = "arn:aws:iam::<ACCOUNT_ID>:role/event-ledger-bank-cluster" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "eks.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-11-25T20:04:48Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "event-ledger-bank-cluster" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "event-ledger-bank-cluster" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - unique_id             = "AROATSY6JMAKX4UZR7L3S" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role.node will be destroyed
+  - resource "aws_iam_role" "node" {
+      - arn                   = "arn:aws:iam::<ACCOUNT_ID>:role/event-ledger-bank-node" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-11-25T20:04:48Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "event-ledger-bank-node" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+          - "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+          - "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "event-ledger-bank-node" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - unique_id             = "AROATSY6JMAKZZXC3BMOV" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role_policy.app will be destroyed
+  - resource "aws_iam_role_policy" "app" {
+      - id          = "event-ledger-bank-app:app" -> null
+      - name        = "app" -> null
+      - policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "kafka-cluster:WriteData",
+                          - "kafka-cluster:ReadData",
+                          - "kafka-cluster:DescribeTopic",
+                          - "kafka-cluster:DescribeGroup",
+                          - "kafka-cluster:DescribeCluster",
+                          - "kafka-cluster:CreateTopic",
+                          - "kafka-cluster:Connect",
+                          - "kafka-cluster:AlterGroup",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = [
+                          - "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:topic/event-ledger-bank/*",
+                          - "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:group/event-ledger-bank/*",
+                          - "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1",
+                        ]
+                      - Sid      = "MskIam"
+                    },
+                  - {
+                      - Action   = [
+                          - "s3:PutObject",
+                          - "s3:AbortMultipartUpload",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::event-ledger-bank-data-<ACCOUNT_ID>/*"
+                      - Sid      = "SinkBucket"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - role        = "event-ledger-bank-app" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_iam_role_policy_attachment.cluster will be destroyed
+  - resource "aws_iam_role_policy_attachment" "cluster" {
+      - id         = "event-ledger-bank-cluster/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy" -> null
+      - role       = "event-ledger-bank-cluster" -> null
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "node" {
+      - id         = "event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly" -> null
+      - role       = "event-ledger-bank-node" -> null
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "node" {
+      - id         = "event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" -> null
+      - role       = "event-ledger-bank-node" -> null
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "node" {
+      - id         = "event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy" -> null
+      - role       = "event-ledger-bank-node" -> null
+    }
+
+  # aws_internet_gateway.igw will be destroyed
+  - resource "aws_internet_gateway" "igw" {
+      - arn      = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:internet-gateway/igw-0cdc0d2e18b664323" -> null
+      - id       = "igw-0cdc0d2e18b664323" -> null
+      - owner_id = "<ACCOUNT_ID>" -> null
+      - region   = "ap-southeast-2" -> null
+      - tags     = {
+          - "Name" = "event-ledger-bank"
+        } -> null
+      - tags_all = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "event-ledger-bank"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - vpc_id   = "vpc-0dffe23064a286bfb" -> null
+    }
+
+  # aws_msk_serverless_cluster.this will be destroyed
+  - resource "aws_msk_serverless_cluster" "this" {
+      - arn                        = "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1" -> null
+      - bootstrap_brokers_sasl_iam = "boot-ndkvs3j4.c1.kafka-serverless.ap-southeast-2.amazonaws.com:9098" -> null
+      - cluster_name               = "event-ledger-bank" -> null
+      - cluster_uuid               = "d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1" -> null
+      - id                         = "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1" -> null
+      - region                     = "ap-southeast-2" -> null
+      - tags                       = {} -> null
+      - tags_all                   = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+
+      - client_authentication {
+          - sasl {
+              - iam {
+                  - enabled = true -> null
+                }
+            }
+        }
+
+      - vpc_config {
+          - security_group_ids = [
+              - "sg-03022b9e17222eb58",
+            ] -> null
+          - subnet_ids         = [
+              - "subnet-0b606facaa0a06383",
+              - "subnet-0c12923cc5160b03b",
+            ] -> null
+        }
+    }
+
+  # aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-0bfa8cebf10ca74a0" -> null
+      - id               = "rtb-0bfa8cebf10ca74a0" -> null
+      - owner_id         = "<ACCOUNT_ID>" -> null
+      - propagating_vgws = [] -> null
+      - region           = "ap-southeast-2" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-0cdc0d2e18b664323"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "event-ledger-bank"
+        } -> null
+      - tags_all         = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "event-ledger-bank"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - vpc_id           = "vpc-0dffe23064a286bfb" -> null
+    }
+
+  # aws_route_table_association.public[0] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-06b09ddd5a1361240" -> null
+      - region         = "ap-southeast-2" -> null
+      - route_table_id = "rtb-0bfa8cebf10ca74a0" -> null
+      - subnet_id      = "subnet-0c12923cc5160b03b" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_route_table_association.public[1] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-0c419f057c553413d" -> null
+      - region         = "ap-southeast-2" -> null
+      - route_table_id = "rtb-0bfa8cebf10ca74a0" -> null
+      - subnet_id      = "subnet-0b606facaa0a06383" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_s3_bucket.athena will be destroyed
+  - resource "aws_s3_bucket" "athena" {
+      - arn                         = "arn:aws:s3:::event-ledger-bank-athena-<ACCOUNT_ID>" -> null
+      - bucket                      = "event-ledger-bank-athena-<ACCOUNT_ID>" -> null
+      - bucket_domain_name          = "event-ledger-bank-athena-<ACCOUNT_ID>.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "ap-southeast-2" -> null
+      - bucket_regional_domain_name = "event-ledger-bank-athena-<ACCOUNT_ID>.s3.ap-southeast-2.amazonaws.com" -> null
+      - force_destroy               = true -> null
+      - hosted_zone_id              = "Z1WCIGYICN2BYD" -> null
+      - id                          = "event-ledger-bank-athena-<ACCOUNT_ID>" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "ap-southeast-2" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "4db0249aa76181a4ce0123ace82448db6a31fea1540fd5f4606d76c644a84dcc" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket.data will be destroyed
+  - resource "aws_s3_bucket" "data" {
+      - arn                         = "arn:aws:s3:::event-ledger-bank-data-<ACCOUNT_ID>" -> null
+      - bucket                      = "event-ledger-bank-data-<ACCOUNT_ID>" -> null
+      - bucket_domain_name          = "event-ledger-bank-data-<ACCOUNT_ID>.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "ap-southeast-2" -> null
+      - bucket_regional_domain_name = "event-ledger-bank-data-<ACCOUNT_ID>.s3.ap-southeast-2.amazonaws.com" -> null
+      - force_destroy               = true -> null
+      - hosted_zone_id              = "Z1WCIGYICN2BYD" -> null
+      - id                          = "event-ledger-bank-data-<ACCOUNT_ID>" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "ap-southeast-2" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "4db0249aa76181a4ce0123ace82448db6a31fea1540fd5f4606d76c644a84dcc" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket_public_access_block.block["athena"] will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "block" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "event-ledger-bank-athena-<ACCOUNT_ID>" -> null
+      - id                      = "event-ledger-bank-athena-<ACCOUNT_ID>" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "ap-southeast-2" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_s3_bucket_public_access_block.block["data"] will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "block" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "event-ledger-bank-data-<ACCOUNT_ID>" -> null
+      - id                      = "event-ledger-bank-data-<ACCOUNT_ID>" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "ap-southeast-2" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_security_group.msk will be destroyed
+  - resource "aws_security_group" "msk" {
+      - arn                    = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-03022b9e17222eb58" -> null
+      - description            = "MSK Serverless: IAM auth port, from the EKS cluster security group only" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "10.20.0.0/16",
+                ]
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - id                     = "sg-03022b9e17222eb58" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = []
+              - description      = "Kafka IAM from EKS"
+              - from_port        = 9098
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-02d58c37402a3af54",
+                ]
+              - self             = false
+              - to_port          = 9098
+            },
+        ] -> null
+      - name                   = "event-ledger-bank-msk" -> null
+      - owner_id               = "<ACCOUNT_ID>" -> null
+      - region                 = "ap-southeast-2" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {} -> null
+      - tags_all               = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+      - vpc_id                 = "vpc-0dffe23064a286bfb" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_subnet.public[0] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0c12923cc5160b03b" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-southeast-2a" -> null
+      - availability_zone_id                           = "apse2-az1" -> null
+      - cidr_block                                     = "10.20.0.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0c12923cc5160b03b" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "<ACCOUNT_ID>" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-southeast-2" -> null
+      - tags                                           = {
+          - "Name"                   = "event-ledger-bank-public-0"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Ephemeral"              = "true"
+          - "ManagedBy"              = "terraform"
+          - "Name"                   = "event-ledger-bank-public-0"
+          - "Owner"                  = "alvieirvansyah"
+          - "Project"                = "event-ledger-bank"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-0dffe23064a286bfb" -> null
+        # (5 unchanged attributes hidden)
+    }
+
+  # aws_subnet.public[1] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0b606facaa0a06383" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-southeast-2b" -> null
+      - availability_zone_id                           = "apse2-az3" -> null
+      - cidr_block                                     = "10.20.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0b606facaa0a06383" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "<ACCOUNT_ID>" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-southeast-2" -> null
+      - tags                                           = {
+          - "Name"                   = "event-ledger-bank-public-1"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Ephemeral"              = "true"
+          - "ManagedBy"              = "terraform"
+          - "Name"                   = "event-ledger-bank-public-1"
+          - "Owner"                  = "alvieirvansyah"
+          - "Project"                = "event-ledger-bank"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-0dffe23064a286bfb" -> null
+        # (5 unchanged attributes hidden)
+    }
+
+  # aws_vpc.main will be destroyed
+  - resource "aws_vpc" "main" {
+      - arn                                  = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:vpc/vpc-0dffe23064a286bfb" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.20.0.0/16" -> null
+      - default_network_acl_id               = "acl-0080817875cf90685" -> null
+      - default_route_table_id               = "rtb-0b20e0a57ebbaf54c" -> null
+      - default_security_group_id            = "sg-0ae731e6dc1766cfc" -> null
+      - dhcp_options_id                      = "dopt-0c099a101834eeda6" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-0dffe23064a286bfb" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-0b20e0a57ebbaf54c" -> null
+      - network_firewall_association         = [] -> null
+      - owner_id                             = "<ACCOUNT_ID>" -> null
+      - region                               = "ap-southeast-2" -> null
+      - tags                                 = {
+          - "Name" = "event-ledger-bank"
+        } -> null
+      - tags_all                             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "event-ledger-bank"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "event-ledger-bank"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 37 to destroy.
+
+Changes to Outputs:
+  - athena_bucket      = "event-ledger-bank-athena-<ACCOUNT_ID>" -> null
+  - athena_workgroup   = "event-ledger-bank" -> null
+  - cluster_name       = "event-ledger-bank" -> null
+  - data_bucket        = "event-ledger-bank-data-<ACCOUNT_ID>" -> null
+  - ecr_registry       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/event-ledger-bank" -> null
+  - eks_log_group      = "/aws/eks/event-ledger-bank/cluster" -> null
+  - glue_database      = "bank" -> null
+  - keyspaces_keyspace = "bank" -> null
+  - msk_cluster_arn    = "arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1" -> null
+  - region             = "ap-southeast-2" -> null
+  - vpc_id             = "vpc-0dffe23064a286bfb" -> null
+aws_route_table_association.public[0]: Destroying... [id=rtbassoc-06b09ddd5a1361240]
+aws_ecr_repository.svc["accounts"]: Destroying... [id=event-ledger-bank/accounts]
+aws_ecr_repository.svc["transfers"]: Destroying... [id=event-ledger-bank/transfers]
+aws_ecr_repository.svc["web"]: Destroying... [id=event-ledger-bank/web]
+aws_ecr_repository.svc["envoy"]: Destroying... [id=event-ledger-bank/envoy]
+aws_route_table_association.public[1]: Destroying... [id=rtbassoc-0c419f057c553413d]
+aws_ecr_repository.svc["analytics-sink"]: Destroying... [id=event-ledger-bank/analytics-sink]
+aws_eks_pod_identity_association.app: Destroying... [id=a-utrgtlrplhdjezihs]
+aws_ecr_repository.svc["topic-init"]: Destroying... [id=event-ledger-bank/topic-init]
+aws_glue_catalog_table.events: Destroying... [id=<ACCOUNT_ID>:bank:events]
+aws_glue_catalog_table.events: Destruction complete after 2s
+aws_s3_bucket_public_access_block.block["data"]: Destroying... [id=event-ledger-bank-data-<ACCOUNT_ID>]
+aws_eks_pod_identity_association.app: Destruction complete after 2s
+aws_iam_role_policy.app: Destroying... [id=event-ledger-bank-app:app]
+aws_ecr_repository.svc["envoy"]: Destruction complete after 2s
+aws_ecr_repository.svc["web"]: Destruction complete after 2s
+aws_ecr_repository.svc["notifications"]: Destroying... [id=event-ledger-bank/notifications]
+aws_ecr_repository.svc["transfers"]: Destruction complete after 2s
+aws_ecr_repository.svc["topic-init"]: Destruction complete after 2s
+aws_ecr_repository.svc["analytics-sink"]: Destruction complete after 2s
+aws_ecr_repository.svc["accounts"]: Destruction complete after 2s
+aws_athena_workgroup.bank: Destroying... [id=event-ledger-bank]
+aws_s3_bucket_public_access_block.block["athena"]: Destroying... [id=event-ledger-bank-athena-<ACCOUNT_ID>]
+aws_ecr_repository.svc["ledger"]: Destroying... [id=event-ledger-bank/ledger]
+aws_eks_addon.pod_identity: Destroying... [id=event-ledger-bank:eks-pod-identity-agent]
+aws_glue_catalog_database.bank: Destroying... [id=<ACCOUNT_ID>:bank]
+aws_route_table_association.public[0]: Destruction complete after 3s
+aws_route_table_association.public[1]: Destruction complete after 3s
+aws_route_table.public: Destroying... [id=rtb-0bfa8cebf10ca74a0]
+aws_s3_bucket_public_access_block.block["data"]: Destruction complete after 1s
+aws_glue_catalog_database.bank: Destruction complete after 1s
+aws_iam_role_policy.app: Destruction complete after 1s
+aws_msk_serverless_cluster.this: Destroying... [id=arn:aws:kafka:ap-southeast-2:<ACCOUNT_ID>:cluster/event-ledger-bank/d5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1]
+aws_iam_role.app: Destroying... [id=event-ledger-bank-app]
+aws_ecr_repository.svc["notifications"]: Destruction complete after 1s
+aws_ecr_repository.svc["ledger"]: Destruction complete after 1s
+aws_athena_workgroup.bank: Destruction complete after 2s
+aws_s3_bucket_public_access_block.block["athena"]: Destruction complete after 2s
+aws_s3_bucket.athena: Destroying... [id=event-ledger-bank-athena-<ACCOUNT_ID>]
+aws_s3_bucket.data: Destroying... [id=event-ledger-bank-data-<ACCOUNT_ID>]
+aws_iam_role.app: Destruction complete after 1s
+aws_route_table.public: Destruction complete after 2s
+aws_internet_gateway.igw: Destroying... [id=igw-0cdc0d2e18b664323]
+aws_s3_bucket.data: Destruction complete after 1s
+aws_s3_bucket.athena: Destruction complete after 1s
+aws_eks_addon.pod_identity: Destruction complete after 3s
+aws_eks_node_group.spot: Destroying... [id=event-ledger-bank:spot]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 00m10s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 00m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 00m10s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 00m20s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 00m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 00m20s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 00m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 00m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 00m30s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 00m40s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 00m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 00m40s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 00m50s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 00m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 00m50s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 01m00s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 01m00s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 01m00s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 01m10s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 01m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 01m10s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 01m20s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 01m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 01m20s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 01m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 01m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 01m30s elapsed]
+aws_msk_serverless_cluster.this: Still destroying... [id=arn:aws:kafka:ap-southeast-2:2464872775...5dfc1b9-2ad8-4ad2-9dc5-fb7b5e4822b5-s1, 01m40s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 01m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 01m40s elapsed]
+aws_msk_serverless_cluster.this: Destruction complete after 1m49s
+aws_security_group.msk: Destroying... [id=sg-03022b9e17222eb58]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 01m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 01m50s elapsed]
+aws_security_group.msk: Still destroying... [id=sg-03022b9e17222eb58, 00m10s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 02m00s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 02m00s elapsed]
+aws_security_group.msk: Still destroying... [id=sg-03022b9e17222eb58, 00m20s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 02m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 02m10s elapsed]
+aws_security_group.msk: Still destroying... [id=sg-03022b9e17222eb58, 00m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 02m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 02m20s elapsed]
+aws_security_group.msk: Destruction complete after 39s
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 02m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 02m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 02m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 02m40s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 02m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 02m50s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 03m00s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 03m00s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 03m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 03m10s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 03m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 03m20s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 03m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 03m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 03m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 03m40s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 03m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 03m50s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 04m00s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 04m00s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 04m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 04m10s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 04m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 04m20s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 04m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 04m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 04m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 04m40s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 04m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 04m50s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 05m00s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 05m00s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 05m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 05m10s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 05m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 05m20s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 05m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 05m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 05m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 05m40s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 05m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 05m50s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 06m00s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 06m00s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 06m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 06m10s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 06m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 06m20s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 06m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 06m30s elapsed]
+aws_internet_gateway.igw: Still destroying... [id=igw-0cdc0d2e18b664323, 06m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 06m40s elapsed]
+aws_internet_gateway.igw: Destruction complete after 6m43s
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 06m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 07m00s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 07m10s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 07m20s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 07m30s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 07m40s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 07m50s elapsed]
+aws_eks_node_group.spot: Still destroying... [id=event-ledger-bank:spot, 08m00s elapsed]
+aws_eks_node_group.spot: Destruction complete after 8m10s
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]: Destroying... [id=event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]: Destroying... [id=event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]: Destroying... [id=event-ledger-bank-node/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+aws_eks_cluster.this: Destroying... [id=event-ledger-bank]
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]: Destruction complete after 1s
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]: Destruction complete after 1s
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]: Destruction complete after 2s
+aws_iam_role.node: Destroying... [id=event-ledger-bank-node]
+aws_iam_role.node: Destruction complete after 1s
+aws_eks_cluster.this: Still destroying... [id=event-ledger-bank, 00m10s elapsed]
+aws_eks_cluster.this: Still destroying... [id=event-ledger-bank, 00m20s elapsed]
+aws_eks_cluster.this: Still destroying... [id=event-ledger-bank, 00m30s elapsed]
+aws_eks_cluster.this: Still destroying... [id=event-ledger-bank, 00m40s elapsed]
+aws_eks_cluster.this: Still destroying... [id=event-ledger-bank, 00m50s elapsed]
+aws_eks_cluster.this: Still destroying... [id=event-ledger-bank, 01m00s elapsed]
+aws_eks_cluster.this: Still destroying... [id=event-ledger-bank, 01m10s elapsed]
+aws_eks_cluster.this: Destruction complete after 1m19s
+aws_iam_role_policy_attachment.cluster: Destroying... [id=event-ledger-bank-cluster/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+aws_cloudwatch_log_group.eks: Destroying... [id=/aws/eks/event-ledger-bank/cluster]
+aws_subnet.public[1]: Destroying... [id=subnet-0b606facaa0a06383]
+aws_subnet.public[0]: Destroying... [id=subnet-0c12923cc5160b03b]
+aws_iam_role_policy_attachment.cluster: Destruction complete after 1s
+aws_iam_role.cluster: Destroying... [id=event-ledger-bank-cluster]
+aws_cloudwatch_log_group.eks: Destruction complete after 2s
+aws_iam_role.cluster: Destruction complete after 1s
+aws_subnet.public[0]: Destruction complete after 2s
+aws_subnet.public[1]: Destruction complete after 3s
+aws_vpc.main: Destroying... [id=vpc-0dffe23064a286bfb]
+aws_vpc.main: Destruction complete after 1s
+
+Destroy complete! Resources: 37 destroyed.
+destroy finished
+DESTROY_EXIT=0
