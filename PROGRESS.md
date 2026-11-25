@@ -5,24 +5,24 @@ Resume from here if the session restarts. Current phase: **1 (local)**.
 ## Coverage matrix (SPECS §2)
 - [x] Backend / distributed systems / resilience (5 Go services, idempotency, Envoy retries + outlier detection)
 - [x] Go (all services)
-- [ ] Cassandra (cqlsh proof) / Keyspaces (describe)
-- [ ] Kafka async (consumer logs) / MSK Serverless
-- [ ] Kubernetes + Docker (kind and EKS, Kustomize)
-- [ ] Envoy for RPC (admin /clusters dump)
+- [x] Cassandra (cqlsh proof) [ ] Keyspaces (describe)
+- [x] Kafka async (consumer logs) [ ] MSK Serverless
+- [x] Kubernetes + Docker (kind) [ ] EKS
+- [x] Envoy for RPC (admin /clusters dump)
 - [ ] AWS production infra (resources.txt, Athena result)
 - [x] React internal tools (`web/`)
-- [ ] Analytics sink + Athena queries
+- [x] Analytics sink (DuckDB) [ ] Athena
 
 ## Phase 0 scaffold
 - [x] Repo layout, README, PROGRESS, DECISIONS, .gitignore, .gitattributes, .env.example, CI workflow
 
 ## Phase 1 local (SPECS §9)
 - [x] Features F1-F4, F6 (compose stack, seeded, tests green)
-- [ ] F5 Envoy drill
-- [ ] kind deployment
+- [x] F5 Envoy drill (retries 3, 100% success)
+- [x] kind deployment
 - [x] tests/: go unit + integration JUnit, Playwright report
-- [ ] screenshots 01-customers, 02-account-entries, 03-transfer, 04-live-feed, 05-system-health, 06-jaeger-transfer-trace
-- [ ] logs: cqlsh-ledger, kafka-consume, envoy-clusters, duckdb-daily-volume, drill-ledger-restart, kind-get-all
+- [x] screenshots 01-06
+- [x] logs: cqlsh-ledger, kafka-consume, envoy-clusters, duckdb-daily-volume, drill-ledger-restart, kind-get-all
 - [ ] CI green on main, proof index complete
 
 ## Phase 2 AWS (SPECS §10)

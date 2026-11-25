@@ -15,13 +15,13 @@ echo "envoy ledger stats before: $(stat)"
 RES=$(mktemp)
 worker() { end=$((SECONDS + DURATION)); while [ $SECONDS -lt $end ]; do
   code=$(curl -s -o /dev/null -w '%{http_code}' -m 10 -X POST "$BASE_URL/v1/transfers" -H 'Content-Type: application/json' \
-    -d "{\"idempotency_key\":\"drill-$RANDOM-$RANDOM-$SECONDS\",\"from_account_id\":\"$A\",\"to_account_id\":\"$B\",\"amount_minor\":100}"); echo "$code" >> "$RES"; done; }
-for _ in $(seq "$WORKERS"); do worker & done
+    -d "{\"idempotency_key\":\"drill-$RANDOM-$RANDOM-$SECONDS\",\"from_account_id\":\"$A\",\"to_account_id\":\"$B\",\"amount_minor\":100}" || true); echo "$code" >> "$RES"; done; }
+PIDS=(); for _ in $(seq "$WORKERS"); do worker & PIDS+=($!); done
 sleep 10
-echo "$(date +%T) deleting one ledger pod"
-kubectl -n "$NS" delete "$(kubectl -n "$NS" get pod -l app=ledger -o name | head -1)" --wait=false
+echo "$(date +%T) force-deleting one ledger pod (grace period 0: in-flight connections are reset)"
+kubectl -n "$NS" delete "$(kubectl -n "$NS" get pod -l app=ledger -o name | head -1)" --grace-period=0 --force --wait=false
 kubectl -n "$NS" get pods -l app=ledger -o wide
-wait
+wait "${PIDS[@]}" || true
 total=$(wc -l < "$RES"); ok=$(grep -c '^200$' "$RES" || true)
 echo "envoy ledger stats after:  $(stat)"
 echo "requests=$total success=$ok rate=$((100 * ok / total))%"

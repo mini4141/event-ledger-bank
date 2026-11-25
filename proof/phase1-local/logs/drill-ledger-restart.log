@@ -1,0 +1,11 @@
+envoy ledger stats before: cluster.ledger.outlier_detection.ejections_total: 0 cluster.ledger.upstream_rq_retry: 0 cluster.ledger.upstream_rq_total: 648 
+02:55:28 force-deleting one ledger pod (grace period 0: in-flight connections are reset)
+Warning: Immediate deletion does not wait for confirmation that the running resource has been terminated. The resource may continue to run on the cluster indefinitely.
+pod "ledger-8f7478885-4mrgx" force deleted from bank namespace
+NAME                     READY   STATUS              RESTARTS   AGE     IP            NODE                NOMINATED NODE   READINESS GATES
+ledger-8f7478885-d2xp5   0/1     ContainerCreating   0          0s      <none>        elb-control-plane   <none>           <none>
+ledger-8f7478885-wtngb   1/1     Running             0          3m17s   10.244.0.22   elb-control-plane   <none>           <none>
+envoy ledger stats after:  cluster.ledger.outlier_detection.ejections_total: 0 cluster.ledger.upstream_rq_retry: 3 cluster.ledger.upstream_rq_total: 936 
+requests=288 success=288 rate=100%
+    288 200
+DRILL OK (>=95%)

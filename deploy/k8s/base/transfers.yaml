@@ -33,6 +33,7 @@ kind: Service
 metadata:
   name: transfers
 spec:
+  clusterIP: None # headless: Envoy resolves pod IPs and load-balances/ejects per pod
   selector: { app: transfers }
   ports:
     - { name: http, port: 8080, targetPort: http }

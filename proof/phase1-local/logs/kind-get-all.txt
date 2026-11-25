@@ -1,0 +1,55 @@
+NAME                                  READY   STATUS      RESTARTS   AGE     IP            NODE                NOMINATED NODE   READINESS GATES
+pod/accounts-8f59bbd8d-kg67q          1/1     Running     0          15m     10.244.0.5    elb-control-plane   <none>           <none>
+pod/accounts-8f59bbd8d-vlrdh          1/1     Running     0          15m     10.244.0.6    elb-control-plane   <none>           <none>
+pod/analytics-sink-574dd847d4-z8hdg   1/1     Running     0          15m     10.244.0.7    elb-control-plane   <none>           <none>
+pod/cassandra-0                       1/1     Running     0          15m     10.244.0.19   elb-control-plane   <none>           <none>
+pod/cassandra-schema-wm6b7            0/1     Completed   0          15m     10.244.0.16   elb-control-plane   <none>           <none>
+pod/envoy-8b5f45b9-vfxjh              1/1     Running     0          15m     10.244.0.8    elb-control-plane   <none>           <none>
+pod/kafka-0                           1/1     Running     0          15m     10.244.0.14   elb-control-plane   <none>           <none>
+pod/ledger-8f7478885-d2xp5            1/1     Running     0          62s     10.244.0.25   elb-control-plane   <none>           <none>
+pod/ledger-8f7478885-wtngb            1/1     Running     0          4m19s   10.244.0.22   elb-control-plane   <none>           <none>
+pod/notifications-797fd457bf-h4gvn    1/1     Running     0          15m     10.244.0.11   elb-control-plane   <none>           <none>
+pod/topic-init-bzlj2                  0/1     Completed   0          15m     10.244.0.18   elb-control-plane   <none>           <none>
+pod/transfers-5f558c9986-kb25n        1/1     Running     0          15m     10.244.0.12   elb-control-plane   <none>           <none>
+pod/transfers-5f558c9986-n9xv9        1/1     Running     0          15m     10.244.0.13   elb-control-plane   <none>           <none>
+pod/web-55cd77797b-8tml4              1/1     Running     0          15m     10.244.0.15   elb-control-plane   <none>           <none>
+
+NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE    SELECTOR
+service/accounts         ClusterIP   None            <none>        8080/TCP,9000/TCP                            114s   app=accounts
+service/analytics-sink   ClusterIP   10.96.86.166    <none>        8080/TCP                                     15m    app=analytics-sink
+service/cassandra        ClusterIP   None            <none>        9042/TCP                                     15m    app=cassandra
+service/envoy            NodePort    10.96.226.56    <none>        80:30080/TCP,8081:31846/TCP,9901:32507/TCP   15m    app=envoy
+service/kafka            ClusterIP   None            <none>        9092/TCP                                     15m    app=kafka
+service/ledger           ClusterIP   None            <none>        8080/TCP,9000/TCP                            114s   app=ledger
+service/notifications    ClusterIP   10.96.195.82    <none>        8080/TCP                                     15m    app=notifications
+service/transfers        ClusterIP   None            <none>        8080/TCP,9000/TCP                            114s   app=transfers
+service/web              ClusterIP   10.96.108.145   <none>        80/TCP                                       15m    app=web
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS       IMAGES                   SELECTOR
+deployment.apps/accounts         2/2     2            2           15m   accounts         elb/accounts:dev         app=accounts
+deployment.apps/analytics-sink   1/1     1            1           15m   analytics-sink   elb/analytics-sink:dev   app=analytics-sink
+deployment.apps/envoy            1/1     1            1           15m   envoy            elb/envoy:dev            app=envoy
+deployment.apps/ledger           2/2     2            2           15m   ledger           elb/ledger:dev           app=ledger
+deployment.apps/notifications    1/1     1            1           15m   notifications    elb/notifications:dev    app=notifications
+deployment.apps/transfers        2/2     2            2           15m   transfers        elb/transfers:dev        app=transfers
+deployment.apps/web              1/1     1            1           15m   web              elb/web:dev              app=web
+
+NAME                                        DESIRED   CURRENT   READY   AGE   CONTAINERS       IMAGES                   SELECTOR
+replicaset.apps/accounts-8f59bbd8d          2         2         2       15m   accounts         elb/accounts:dev         app=accounts,pod-template-hash=8f59bbd8d
+replicaset.apps/analytics-sink-574dd847d4   1         1         1       15m   analytics-sink   elb/analytics-sink:dev   app=analytics-sink,pod-template-hash=574dd847d4
+replicaset.apps/envoy-8b5f45b9              1         1         1       15m   envoy            elb/envoy:dev            app=envoy,pod-template-hash=8b5f45b9
+replicaset.apps/ledger-8f7478885            2         2         2       15m   ledger           elb/ledger:dev           app=ledger,pod-template-hash=8f7478885
+replicaset.apps/notifications-797fd457bf    1         1         1       15m   notifications    elb/notifications:dev    app=notifications,pod-template-hash=797fd457bf
+replicaset.apps/transfers-5f558c9986        2         2         2       15m   transfers        elb/transfers:dev        app=transfers,pod-template-hash=5f558c9986
+replicaset.apps/web-55cd77797b              1         1         1       15m   web              elb/web:dev              app=web,pod-template-hash=55cd77797b
+
+NAME                         READY   AGE   CONTAINERS   IMAGES
+statefulset.apps/cassandra   1/1     15m   cassandra    cassandra:5.0.4
+statefulset.apps/kafka       1/1     15m   kafka        apache/kafka:4.0.0
+
+NAME                         STATUS     COMPLETIONS   DURATION   AGE   CONTAINERS   IMAGES               SELECTOR
+job.batch/cassandra-schema   Complete   1/1           3m28s      15m   cqlsh        cassandra:5.0.4      batch.kubernetes.io/controller-uid=71164fdd-2a7b-4217-9b93-f7814b51acc5
+job.batch/topic-init         Complete   1/1           2m4s       15m   topic-init   elb/topic-init:dev   batch.kubernetes.io/controller-uid=60caaf40-e204-4935-a28e-217132baa62a
+
+NAME                                     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+persistentvolumeclaim/data-cassandra-0   Bound    pvc-668e16d5-681d-46bd-886d-4e0f6ec03520   2Gi        RWO            standard       <unset>                 15m   Filesystem

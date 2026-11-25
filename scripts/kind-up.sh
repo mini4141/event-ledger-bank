@@ -14,6 +14,7 @@ for i in accounts ledger transfers notifications analytics-sink topic-init web e
 kubectl create namespace bank --dry-run=client -o yaml | kubectl apply -f -
 kubectl -n bank create configmap cql-schema --from-file=db/cql/schema.cql --dry-run=client -o yaml | kubectl apply -f -
 kubectl apply -k deploy/k8s/overlays/kind
+kubectl -n bank wait --for=condition=complete job/cassandra-schema job/topic-init --timeout=600s
 kubectl -n bank rollout status deploy/envoy deploy/accounts deploy/ledger deploy/transfers deploy/notifications deploy/web --timeout=300s
 wait_http "$BASE_URL/healthz/ledger" 60
 echo "kind stack is up: $BASE_URL"
