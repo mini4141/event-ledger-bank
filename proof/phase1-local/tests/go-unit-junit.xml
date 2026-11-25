@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="3">
+	<testsuite name="github.com/mini4141/event-ledger-bank/internal/bank" tests="2" failures="0" errors="0" id="0" hostname="DESKTOP-LSTSC86" time="0.982" timestamp="2026-11-26T02:18:33+07:00">
+		<testcase name="TestPostingBalancesToZero" classname="github.com/mini4141/event-ledger-bank/internal/bank" time="0.000"></testcase>
+		<testcase name="TestInsufficientFunds" classname="github.com/mini4141/event-ledger-bank/internal/bank" time="0.000"></testcase>
+	</testsuite>
+	<testsuite name="github.com/mini4141/event-ledger-bank/internal/cass" tests="0" failures="0" errors="0" id="1" hostname="DESKTOP-LSTSC86" time="0.000" timestamp="2026-11-26T02:18:33+07:00"></testsuite>
+	<testsuite name="github.com/mini4141/event-ledger-bank/internal/grpcx" tests="0" failures="0" errors="0" id="2" hostname="DESKTOP-LSTSC86" time="0.000" timestamp="2026-11-26T02:18:33+07:00"></testsuite>
+	<testsuite name="github.com/mini4141/event-ledger-bank/internal/kafkax" tests="0" failures="0" errors="0" id="3" hostname="DESKTOP-LSTSC86" time="0.000" timestamp="2026-11-26T02:18:33+07:00"></testsuite>
+	<testsuite name="github.com/mini4141/event-ledger-bank/internal/obs" tests="0" failures="0" errors="0" id="4" hostname="DESKTOP-LSTSC86" time="0.000" timestamp="2026-11-26T02:18:33+07:00"></testsuite>
+	<testsuite name="github.com/mini4141/event-ledger-bank/internal/transfer" tests="1" failures="0" errors="0" id="5" hostname="DESKTOP-LSTSC86" time="0.924" timestamp="2026-11-26T02:18:34+07:00">
+		<testcase name="TestIdempotentReplayReturnsOriginal" classname="github.com/mini4141/event-ledger-bank/internal/transfer" time="0.000"></testcase>
+	</testsuite>
+</testsuites>

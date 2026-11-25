@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata: { name: cassandra-schema, namespace: bank }
+spec:
+  backoffLimit: 20
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: cqlsh
+          image: cassandra:5.0.4
+          command: ["bash", "-c", "until cqlsh cassandra -f /schema/schema.cql; do echo waiting; sleep 5; done"]
+          volumeMounts: [{ name: schema, mountPath: /schema }]
+      volumes:
+        - name: schema
+          configMap: { name: cql-schema } # created by scripts/kind-up.sh from db/cql/schema.cql
+---
+apiVersion: batch/v1
+kind: Job
+metadata: { name: topic-init, namespace: bank }
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: topic-init
+          image: elb/topic-init:dev
+          imagePullPolicy: IfNotPresent
+          envFrom: [{ configMapRef: { name: app-env } }]

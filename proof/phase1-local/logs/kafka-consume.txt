@@ -1,0 +1,91 @@
+Topic: ledger.posted	TopicId: hDWOmqUxRIuuv5x9MOpkCA	PartitionCount: 3	ReplicationFactor: 1	Configs: 
+	Topic: ledger.posted	Partition: 0	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: ledger.posted	Partition: 1	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: ledger.posted	Partition: 2	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+Topic: transfer.completed	TopicId: UmRFr8OPQl6T4h6TUiQ94Q	PartitionCount: 3	ReplicationFactor: 1	Configs: 
+	Topic: transfer.completed	Partition: 0	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: transfer.completed	Partition: 1	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: transfer.completed	Partition: 2	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+Topic: transfer.failed	TopicId: 9HAgLassTiqQOnZTTBijyA	PartitionCount: 3	ReplicationFactor: 1	Configs: 
+	Topic: transfer.failed	Partition: 0	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: transfer.failed	Partition: 1	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: transfer.failed	Partition: 2	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+Topic: __consumer_offsets	TopicId: 88vG1IpVTnCnJ9-oVhsT-w	PartitionCount: 50	ReplicationFactor: 1	Configs: compression.type=producer,cleanup.policy=compact,segment.bytes=104857600
+	Topic: __consumer_offsets	Partition: 0	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 1	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 2	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 3	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 4	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 5	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 6	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 7	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 8	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 9	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 10	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 11	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 12	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 13	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 14	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 15	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 16	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 17	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 18	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 19	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 20	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 21	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 22	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 23	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 24	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 25	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 26	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 27	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 28	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 29	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 30	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 31	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 32	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 33	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 34	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 35	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 36	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 37	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 38	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 39	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 40	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 41	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 42	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 43	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 44	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 45	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 46	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 47	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 48	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+	Topic: __consumer_offsets	Partition: 49	Leader: 1	Replicas: 1	Isr: 1	Elr: 	LastKnownElr: 
+
+GROUP           TOPIC              PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                              HOST            CLIENT-ID
+analytics-sink  ledger.posted      1          42              42              0               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  ledger.posted      0          53              53              0               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  transfer.failed    1          -               0               -               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  transfer.completed 2          19              19              0               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  transfer.failed    0          -               0               -               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  ledger.posted      2          45              45              0               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  transfer.completed 0          19              19              0               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  transfer.completed 1          20              20              0               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+analytics-sink  transfer.failed    2          -               0               -               kgo-416982a9-ae4e-498a-aee0-78082f05d86b /172.20.0.7     kgo
+
+GROUP           TOPIC              PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                              HOST            CLIENT-ID
+notifications   transfer.failed    1          -               0               -               kgo-2bb6558c-df2c-4324-8903-8ca53f22acf6 /172.20.0.9     kgo
+notifications   transfer.completed 2          19              19              0               kgo-2bb6558c-df2c-4324-8903-8ca53f22acf6 /172.20.0.9     kgo
+notifications   transfer.failed    0          -               0               -               kgo-2bb6558c-df2c-4324-8903-8ca53f22acf6 /172.20.0.9     kgo
+notifications   transfer.completed 0          19              19              0               kgo-2bb6558c-df2c-4324-8903-8ca53f22acf6 /172.20.0.9     kgo
+notifications   transfer.completed 1          20              20              0               kgo-2bb6558c-df2c-4324-8903-8ca53f22acf6 /172.20.0.9     kgo
+notifications   transfer.failed    2          -               0               -               kgo-2bb6558c-df2c-4324-8903-8ca53f22acf6 /172.20.0.9     kgo
+--- notifications consumer log
+notifications-1  | {"time":"2026-11-25T19:17:19.246422704Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":1,"offset":17,"key":"c81d83e8-25fb-4997-964d-1686ad16826b"}
+notifications-1  | {"time":"2026-11-25T19:17:32.621229784Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":2,"offset":16,"key":"fe13db6a-bd17-4467-aaa2-564dd34c3835"}
+notifications-1  | {"time":"2026-11-25T19:18:19.666736696Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":2,"offset":17,"key":"6a7d5ba7-8460-4bb7-abba-e45111d4140f"}
+notifications-1  | {"time":"2026-11-25T19:18:38.649333434Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":0,"offset":17,"key":"244fe135-0ab2-4803-9e66-39cb83689194"}
+notifications-1  | {"time":"2026-11-25T19:18:57.912076843Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":2,"offset":18,"key":"62d1c9ab-f134-4c2d-aae9-bc40f54a20c6"}
+notifications-1  | {"time":"2026-11-25T19:22:01.176110132Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":0,"offset":18,"key":"8bd8e3b1-6530-4854-aff9-f5d55777db39"}
+notifications-1  | {"time":"2026-11-25T19:23:30.855719001Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":1,"offset":18,"key":"cd3fa92e-4e41-43f8-a63d-97cd19eee3e7"}
+notifications-1  | {"time":"2026-11-25T19:23:50.825169412Z","level":"INFO","msg":"consumed","service":"notifications","topic":"transfer.completed","partition":1,"offset":19,"key":"91bc5dfc-d686-499e-a9a0-121b9713388a"}

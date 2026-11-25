@@ -1,0 +1,9 @@
+global: { scrape_interval: 5s }
+scrape_configs:
+  - job_name: services
+    static_configs:
+      - targets: [accounts:8080, ledger:8080, transfers:8080, notifications:8080, analytics-sink:8080]
+  - job_name: envoy
+    metrics_path: /stats/prometheus
+    static_configs:
+      - targets: [envoy:9901]

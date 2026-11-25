@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package bank.v1;
+
+option go_package = "github.com/mini4141/event-ledger-bank/gen/bank/v1;bankv1";
+
+// Topic ledger.posted, keyed by account_id (one event per entry).
+message LedgerPosted {
+  string posting_id = 1;
+  string account_id = 2;
+  string counterparty = 3;
+  string direction = 4;
+  int64 amount_minor = 5;
+  string occurred_at = 6;
+}
+
+// Topic transfer.completed, keyed by from_account_id.
+message TransferCompleted {
+  string transfer_id = 1;
+  string from_account_id = 2;
+  string to_account_id = 3;
+  int64 amount_minor = 4;
+  string occurred_at = 5;
+}
+
+// Topic transfer.failed, keyed by from_account_id.
+message TransferFailed {
+  string transfer_id = 1;
+  string from_account_id = 2;
+  string to_account_id = 3;
+  int64 amount_minor = 4;
+  string reason = 5;
+  string occurred_at = 6;
+}

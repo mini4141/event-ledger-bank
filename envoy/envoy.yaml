@@ -1,0 +1,176 @@
+# Front proxy for every call: browser REST (:8080, gRPC-JSON transcoding) and
+# inter-service gRPC (:8081). Retries, timeouts and outlier detection live here, not in Go.
+admin:
+  address: { socket_address: { address: 0.0.0.0, port_value: 9901 } }
+
+static_resources:
+  listeners:
+    # ---- edge: web app + REST/JSON + SSE ----
+    - name: edge
+      address: { socket_address: { address: 0.0.0.0, port_value: 8080 } }
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: edge
+                codec_type: AUTO
+                access_log:
+                  - name: envoy.access_loggers.stdout
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.access_loggers.stream.v3.StdoutAccessLog
+                      log_format:
+                        json_format:
+                          listener: edge
+                          method: "%REQ(:METHOD)%"
+                          path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
+                          status: "%RESPONSE_CODE%"
+                          grpc_status: "%GRPC_STATUS%"
+                          cluster: "%UPSTREAM_CLUSTER%"
+                          attempts: "%UPSTREAM_REQUEST_ATTEMPT_COUNT%"
+                          flags: "%RESPONSE_FLAGS%"
+                          duration_ms: "%DURATION%"
+                route_config:
+                  name: edge
+                  virtual_hosts:
+                    - name: all
+                      domains: ["*"]
+                      routes:
+                        - { match: { prefix: /healthz/accounts }, route: { cluster: accounts_http, prefix_rewrite: /healthz } }
+                        - { match: { prefix: /healthz/ledger }, route: { cluster: ledger_http, prefix_rewrite: /healthz } }
+                        - { match: { prefix: /healthz/transfers }, route: { cluster: transfers_http, prefix_rewrite: /healthz } }
+                        - { match: { prefix: /healthz/notifications }, route: { cluster: notifications_http, prefix_rewrite: /healthz } }
+                        - { match: { prefix: /healthz/analytics-sink }, route: { cluster: analytics_sink_http, prefix_rewrite: /healthz } }
+                        - { match: { prefix: /v1/system/health }, route: { cluster: envoy_admin, prefix_rewrite: "/clusters?format=json" } }
+                        - match: { prefix: /v1/feed }
+                          route: { cluster: notifications_http, timeout: 0s, idle_timeout: 3600s }
+                        # gRPC-JSON transcoding rewrites /v1/... to these paths and re-selects the route.
+                        - match: { prefix: /bank.v1.LedgerService/ }
+                          route:
+                            cluster: ledger
+                            timeout: 1s
+                            retry_policy: { retry_on: "unavailable,reset,connect-failure", num_retries: 2 }
+                        - match: { prefix: /bank.v1.AccountsService/ }
+                          route:
+                            cluster: accounts
+                            timeout: 3s
+                            retry_policy: { retry_on: "unavailable,reset,connect-failure", num_retries: 2 }
+                        - match: { prefix: /bank.v1.TransfersService/ }
+                          route:
+                            cluster: transfers
+                            timeout: 3s
+                            retry_policy: { retry_on: "unavailable,reset,connect-failure", num_retries: 2 }
+                        - { match: { prefix: /v1/ }, route: { cluster: accounts, timeout: 3s } }
+                        - { match: { prefix: / }, route: { cluster: web } }
+                http_filters:
+                  - name: envoy.filters.http.grpc_json_transcoder
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
+                      proto_descriptor: /etc/envoy/descriptor.binpb
+                      services: [bank.v1.AccountsService, bank.v1.LedgerService, bank.v1.TransfersService]
+                      convert_grpc_status: true
+                      print_options:
+                        always_print_primitive_fields: true
+                        preserve_proto_field_names: true
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+    # ---- mesh: service-to-service gRPC ----
+    - name: mesh
+      address: { socket_address: { address: 0.0.0.0, port_value: 8081 } }
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: mesh
+                codec_type: AUTO
+                access_log:
+                  - name: envoy.access_loggers.stdout
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.access_loggers.stream.v3.StdoutAccessLog
+                      log_format:
+                        json_format:
+                          listener: mesh
+                          path: "%REQ(:PATH)%"
+                          status: "%RESPONSE_CODE%"
+                          grpc_status: "%GRPC_STATUS%"
+                          cluster: "%UPSTREAM_CLUSTER%"
+                          attempts: "%UPSTREAM_REQUEST_ATTEMPT_COUNT%"
+                          flags: "%RESPONSE_FLAGS%"
+                          duration_ms: "%DURATION%"
+                route_config:
+                  name: mesh
+                  virtual_hosts:
+                    - name: grpc
+                      domains: ["*"]
+                      routes:
+                        - match: { prefix: /bank.v1.LedgerService/ }
+                          route:
+                            cluster: ledger
+                            timeout: 1s
+                            retry_policy: { retry_on: "unavailable,reset,connect-failure", num_retries: 2 }
+                        - match: { prefix: /bank.v1.AccountsService/ }
+                          route:
+                            cluster: accounts
+                            timeout: 3s
+                            retry_policy: { retry_on: "unavailable,reset,connect-failure", num_retries: 2 }
+                        - match: { prefix: /bank.v1.TransfersService/ }
+                          route:
+                            cluster: transfers
+                            timeout: 3s
+                            retry_policy: { retry_on: "unavailable,reset,connect-failure", num_retries: 2 }
+                http_filters:
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+  clusters:
+    - name: accounts
+      type: STRICT_DNS
+      connect_timeout: 1s
+      lb_policy: ROUND_ROBIN
+      typed_extension_protocol_options:
+        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+          explicit_http_config: { http2_protocol_options: {} }
+      load_assignment:
+        cluster_name: accounts
+        endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: accounts, port_value: 9000 } } } }] }]
+    - name: ledger
+      type: STRICT_DNS
+      connect_timeout: 1s
+      lb_policy: ROUND_ROBIN
+      outlier_detection:
+        consecutive_5xx: 3
+        consecutive_gateway_failure: 3
+        enforcing_consecutive_gateway_failure: 100
+        interval: 2s
+        base_ejection_time: 5s
+        max_ejection_percent: 50
+      typed_extension_protocol_options:
+        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+          explicit_http_config: { http2_protocol_options: {} }
+      load_assignment:
+        cluster_name: ledger
+        endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: ledger, port_value: 9000 } } } }] }]
+    - name: transfers
+      type: STRICT_DNS
+      connect_timeout: 1s
+      lb_policy: ROUND_ROBIN
+      typed_extension_protocol_options:
+        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+          explicit_http_config: { http2_protocol_options: {} }
+      load_assignment:
+        cluster_name: transfers
+        endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: transfers, port_value: 9000 } } } }] }]
+    - { name: accounts_http, type: STRICT_DNS, connect_timeout: 1s, load_assignment: { cluster_name: accounts_http, endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: accounts, port_value: 8080 } } } }] }] } }
+    - { name: ledger_http, type: STRICT_DNS, connect_timeout: 1s, load_assignment: { cluster_name: ledger_http, endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: ledger, port_value: 8080 } } } }] }] } }
+    - { name: transfers_http, type: STRICT_DNS, connect_timeout: 1s, load_assignment: { cluster_name: transfers_http, endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: transfers, port_value: 8080 } } } }] }] } }
+    - { name: notifications_http, type: STRICT_DNS, connect_timeout: 1s, load_assignment: { cluster_name: notifications_http, endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: notifications, port_value: 8080 } } } }] }] } }
+    - { name: analytics_sink_http, type: STRICT_DNS, connect_timeout: 1s, load_assignment: { cluster_name: analytics_sink_http, endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: analytics-sink, port_value: 8080 } } } }] }] } }
+    - { name: web, type: STRICT_DNS, connect_timeout: 1s, load_assignment: { cluster_name: web, endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: web, port_value: 80 } } } }] }] } }
+    - { name: envoy_admin, type: STATIC, connect_timeout: 1s, load_assignment: { cluster_name: envoy_admin, endpoints: [{ lb_endpoints: [{ endpoint: { address: { socket_address: { address: 127.0.0.1, port_value: 9901 } } } }] }] } }

@@ -1,0 +1,21 @@
+:root { font-family: system-ui, sans-serif; color: #1c2430; background: #f4f6f9; }
+body { margin: 0; }
+header { background: #0b2545; color: #fff; padding: 12px 24px; display: flex; gap: 24px; align-items: center; }
+header h1 { font-size: 18px; margin: 0 24px 0 0; }
+nav button { background: none; border: 0; color: #cfd8e6; font-size: 15px; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+nav button.active { background: #13315c; color: #fff; }
+main { max-width: 980px; margin: 24px auto; padding: 0 16px; }
+section { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+h2 { margin-top: 0; font-size: 17px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e6eaf0; }
+input, select, button.primary { font-size: 14px; padding: 7px 10px; border: 1px solid #b8c2d1; border-radius: 6px; }
+button.primary { background: #1d6fe0; border-color: #1d6fe0; color: #fff; cursor: pointer; }
+button.small { font-size: 12px; padding: 3px 8px; cursor: pointer; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.mono { font-family: ui-monospace, monospace; font-size: 12px; }
+.ok { color: #0a7d36; font-weight: 600; }
+.bad { color: #b3261e; font-weight: 600; }
+.debit { color: #b3261e; } .credit { color: #0a7d36; }
+.feed li { padding: 6px 0; border-bottom: 1px solid #e6eaf0; list-style: none; }
+ul { padding: 0; margin: 0; }

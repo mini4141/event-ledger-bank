@@ -1,0 +1,4 @@
+=== RUN   TestTransferThroughEnvoyPublishesEvent
+--- PASS: TestTransferThroughEnvoyPublishesEvent (0.26s)
+PASS
+ok  	github.com/mini4141/event-ledger-bank/tests/integration	0.512s

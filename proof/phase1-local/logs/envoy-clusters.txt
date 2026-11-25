@@ -1,0 +1,21 @@
+ledger::172.20.0.8:9000::cx_active::6
+ledger::172.20.0.8:9000::rq_success::74
+ledger::172.20.0.8:9000::rq_total::74
+ledger::172.20.0.8:9000::health_flags::healthy
+accounts::172.20.0.11:9000::cx_active::8
+accounts::172.20.0.11:9000::rq_success::1213
+accounts::172.20.0.11:9000::rq_total::1217
+accounts::172.20.0.11:9000::health_flags::healthy
+transfers::172.20.0.10:9000::cx_active::8
+transfers::172.20.0.10:9000::rq_success::61
+transfers::172.20.0.10:9000::rq_total::61
+transfers::172.20.0.10:9000::health_flags::healthy
+--- retry/outlier stats
+cluster.ledger.outlier_detection.ejections_total: 0
+cluster.ledger.upstream_rq_retry: 0
+cluster.ledger.upstream_rq_retry_backoff_exponential: 0
+cluster.ledger.upstream_rq_retry_backoff_ratelimited: 0
+cluster.ledger.upstream_rq_retry_limit_exceeded: 0
+cluster.ledger.upstream_rq_retry_overflow: 0
+cluster.ledger.upstream_rq_retry_success: 0
+cluster.ledger.upstream_rq_total: 74

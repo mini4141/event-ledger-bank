@@ -1,0 +1,17 @@
+.local/
+.env
+node_modules/
+dist/
+bin/
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+crash.log
+kubeconfig*
+*.pem
+*.key
+web/playwright-report/
+web/test-results/
+/data/
+*.log.tmp

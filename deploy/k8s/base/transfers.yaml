@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transfers
+  labels: { app: transfers }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: transfers }
+  template:
+    metadata:
+      labels: { app: transfers }
+    spec:
+      serviceAccountName: bank
+      containers:
+        - name: transfers
+          image: elb/transfers:dev
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef: { name: app-env }
+          ports:
+            - { name: http, containerPort: 8080 }
+            - { name: grpc, containerPort: 9000 }
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 3
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { memory: 256Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transfers
+spec:
+  selector: { app: transfers }
+  ports:
+    - { name: http, port: 8080, targetPort: http }
+    - { name: grpc, port: 9000, targetPort: grpc }

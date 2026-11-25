@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package bank.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/mini4141/event-ledger-bank/gen/bank/v1;bankv1";
+
+message CreateTransferRequest {
+  string idempotency_key = 1;
+  string from_account_id = 2;
+  string to_account_id = 3;
+  int64 amount_minor = 4;
+}
+
+message Transfer {
+  string transfer_id = 1;
+  string status = 2;
+  bool replayed = 3;
+}
+
+service TransfersService {
+  rpc CreateTransfer(CreateTransferRequest) returns (Transfer) {
+    option (google.api.http) = {
+      post: "/v1/transfers"
+      body: "*"
+    };
+  }
+}

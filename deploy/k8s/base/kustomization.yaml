@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bank
+resources:
+  - namespace-sa.yaml
+  - accounts.yaml
+  - ledger.yaml
+  - transfers.yaml
+  - notifications.yaml
+  - analytics-sink.yaml
+  - web.yaml
+  - envoy.yaml
+configMapGenerator:
+  - name: app-env
+    literals:
+      - CASSANDRA_HOSTS=cassandra
+      - CASSANDRA_KEYSPACE=bank
+      - CASSANDRA_AUTH=none
+      - CASSANDRA_TLS=false
+      - CASSANDRA_CONSISTENCY=LOCAL_QUORUM
+      - KAFKA_BROKERS=kafka:9092
+      - KAFKA_SASL=none
+      - ENVOY_GRPC_ADDR=envoy:8081
+      - SINK_DIR=/data/sink
+      - SINK_S3_BUCKET=
+      - AWS_REGION=ap-southeast-2
+generatorOptions:
+  disableNameSuffixHash: true

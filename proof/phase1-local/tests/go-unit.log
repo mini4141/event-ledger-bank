@@ -1,0 +1,14 @@
+=== RUN   TestPostingBalancesToZero
+--- PASS: TestPostingBalancesToZero (0.00s)
+=== RUN   TestInsufficientFunds
+--- PASS: TestInsufficientFunds (0.00s)
+PASS
+ok  	github.com/mini4141/event-ledger-bank/internal/bank	0.982s
+?   	github.com/mini4141/event-ledger-bank/internal/cass	[no test files]
+?   	github.com/mini4141/event-ledger-bank/internal/grpcx	[no test files]
+?   	github.com/mini4141/event-ledger-bank/internal/kafkax	[no test files]
+?   	github.com/mini4141/event-ledger-bank/internal/obs	[no test files]
+=== RUN   TestIdempotentReplayReturnsOriginal
+--- PASS: TestIdempotentReplayReturnsOriginal (0.00s)
+PASS
+ok  	github.com/mini4141/event-ledger-bank/internal/transfer	0.924s

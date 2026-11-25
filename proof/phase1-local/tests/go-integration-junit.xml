@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="1">
+	<testsuite name="github.com/mini4141/event-ledger-bank/tests/integration" tests="1" failures="0" errors="0" id="0" hostname="DESKTOP-LSTSC86" time="0.512" timestamp="2026-11-26T02:18:38+07:00">
+		<testcase name="TestTransferThroughEnvoyPublishesEvent" classname="github.com/mini4141/event-ledger-bank/tests/integration" time="0.260"></testcase>
+	</testsuite>
+</testsuites>

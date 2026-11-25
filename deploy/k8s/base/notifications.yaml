@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications
+  labels: { app: notifications }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: notifications }
+  template:
+    metadata:
+      labels: { app: notifications }
+    spec:
+      serviceAccountName: bank
+      containers:
+        - name: notifications
+          image: elb/notifications:dev
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef: { name: app-env }
+          ports:
+            - { name: http, containerPort: 8080 }
+
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 3
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { memory: 256Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifications
+spec:
+  selector: { app: notifications }
+  ports:
+    - { name: http, port: 8080, targetPort: http }
+

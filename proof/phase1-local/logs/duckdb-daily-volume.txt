@@ -1,0 +1,20 @@
+-- daily_volume
+duckdb agent mode on: CLAUDECODE is set and stdout is not a terminal; -no-agent turns it off, .help agent explains the output
+| dt:DATE | transfers:BIGINT | volume_gbp:DOUBLE |
+|---|---|---|
+| 2026-11-25 | 58 | 377.5 |
+-- top_accounts
+duckdb agent mode on: CLAUDECODE is set and stdout is not a terminal; -no-agent turns it off, .help agent explains the output
+| from_account_id:UUID | transfers:BIGINT | sent_gbp:DOUBLE |
+|---|---|---|
+| 3844301a-0716-4af0-a2f4-fd2d6ff3b011 | 17 | 61.2 |
+| 94b11624-928e-4eef-8c8e-ad76fc0e4b82 | 17 | 59.5 |
+| 27b60455-16e3-445b-97c5-a83fb3e84490 | 16 | 56.8 |
+| 62d1c9ab-f134-4c2d-aae9-bc40f54a20c6 | 1 | 25.0 |
+| cd3fa92e-4e41-43f8-a63d-97cd19eee3e7 | 1 | 25.0 |
+| c81d83e8-25fb-4997-964d-1686ad16826b | 1 | 25.0 |
+| 91bc5dfc-d686-499e-a9a0-121b9713388a | 1 | 25.0 |
+| 8bd8e3b1-6530-4854-aff9-f5d55777db39 | 1 | 25.0 |
+| 6a7d5ba7-8460-4bb7-abba-e45111d4140f | 1 | 25.0 |
+| fe13db6a-bd17-4467-aaa2-564dd34c3835 | 1 | 25.0 |
+10 rows, hash 85524398802b87ef

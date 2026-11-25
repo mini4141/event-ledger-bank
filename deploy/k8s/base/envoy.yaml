@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envoy
+  labels: { app: envoy }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: envoy }
+  template:
+    metadata:
+      labels: { app: envoy }
+    spec:
+      containers:
+        - name: envoy
+          image: elb/envoy:dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { name: edge, containerPort: 8080 }
+            - { name: mesh, containerPort: 8081 }
+            - { name: admin, containerPort: 9901 }
+          readinessProbe:
+            httpGet: { path: /ready, port: admin }
+            periodSeconds: 3
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { memory: 256Mi }
+---
+# Overlays set the edge Service type (NodePort on kind, LoadBalancer on EKS).
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy
+spec:
+  selector: { app: envoy }
+  ports:
+    - { name: edge, port: 80, targetPort: edge }
+    - { name: mesh, port: 8081, targetPort: mesh }
+    - { name: admin, port: 9901, targetPort: admin }

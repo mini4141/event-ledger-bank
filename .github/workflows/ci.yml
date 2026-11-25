@@ -1,0 +1,35 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.26", cache: true }
+      - uses: actions/setup-node@v4
+        with: { node-version: "24" }
+      - name: Tooling (buf, junit, grpcurl, pnpm)
+        run: |
+          go install github.com/bufbuild/buf/cmd/buf@latest
+          go install github.com/jstemmer/go-junit-report/v2@latest
+          go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+          npm i -g pnpm@12.3.4
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+      - name: Web dependencies and Playwright browser
+        run: |
+          cd web && pnpm install --frozen-lockfile && npx playwright install --with-deps chromium
+      - uses: hashicorp/setup-terraform@v3
+      - name: Terraform validate
+        run: |
+          cd infra && terraform init -backend=false && terraform validate
+      - name: All cloud-free tests (buf, unit, integration, smoke, Playwright)
+        run: scripts/test-all.sh
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: test-reports, path: proof/phase1-local/tests }

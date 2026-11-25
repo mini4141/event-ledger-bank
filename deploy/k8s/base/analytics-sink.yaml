@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-sink
+  labels: { app: analytics-sink }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: analytics-sink }
+  template:
+    metadata:
+      labels: { app: analytics-sink }
+    spec:
+      serviceAccountName: bank
+      securityContext: { fsGroup: 65532 }
+      volumes:
+        - { name: sink, emptyDir: {} }
+      containers:
+        - name: analytics-sink
+          image: elb/analytics-sink:dev
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef: { name: app-env }
+          ports:
+            - { name: http, containerPort: 8080 }
+
+          volumeMounts:
+            - { name: sink, mountPath: /data/sink }
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 3
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { memory: 256Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-sink
+spec:
+  selector: { app: analytics-sink }
+  ports:
+    - { name: http, port: 8080, targetPort: http }
+
