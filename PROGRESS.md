@@ -1,6 +1,6 @@
 # PROGRESS
 
-Resume from here if the session restarts. Current phase: **1 (local)**.
+Resume from here if the session restarts. Current phase: **2 (AWS deploy started 2026-11-26 ~03:05 local; destroy within 2h)**.
 
 ## Coverage matrix (SPECS §2)
 - [x] Backend / distributed systems / resilience (5 Go services, idempotency, Envoy retries + outlier detection)
@@ -23,7 +23,7 @@ Resume from here if the session restarts. Current phase: **1 (local)**.
 - [x] tests/: go unit + integration JUnit, Playwright report
 - [x] screenshots 01-06
 - [x] logs: cqlsh-ledger, kafka-consume, envoy-clusters, duckdb-daily-volume, drill-ledger-restart, kind-get-all
-- [ ] CI green on main, proof index complete
+- [x] CI green on main, proof index complete
 
 ## Phase 2 AWS (SPECS §10)
 - [ ] screenshots 01-eks-feed, 02-eks-account, 03-eks-system
