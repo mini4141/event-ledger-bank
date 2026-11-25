@@ -15,7 +15,7 @@ phase1)
     echo "--- notifications consumer log"; docker compose logs notifications 2>&1 | grep consumed | tail -8; } > $P/logs/kafka-consume.txt 2>&1
   { curl -s localhost:19901/clusters | grep -E "::(cx_active|rq_total|health_flags|rq_success)" | grep -E "^(accounts|ledger|transfers)::"
     echo "--- retry/outlier stats"; curl -s localhost:19901/stats | grep -E "cluster\.ledger\.(upstream_rq_total|upstream_rq_retry|outlier_detection\.ejections_total)"; } > $P/logs/envoy-clusters.txt
-  { echo "-- daily_volume"; env -u AI_AGENT "$(duckdb_bin)" -c "$(cat analytics/duckdb/daily_volume.sql)"; echo "-- top_accounts"; env -u AI_AGENT "$(duckdb_bin)" -c "$(cat analytics/duckdb/top_accounts.sql)"; } > $P/logs/duckdb-daily-volume.txt 2>&1
+  { echo "-- daily_volume"; "$(duckdb_bin)" -no-agent -c "$(cat analytics/duckdb/daily_volume.sql)"; echo "-- top_accounts"; "$(duckdb_bin)" -no-agent -c "$(cat analytics/duckdb/top_accounts.sql)"; } > $P/logs/duckdb-daily-volume.txt 2>&1
   ;;
 phase1-kind)
   P=proof/phase1-local; mkdir -p $P/logs

@@ -1,0 +1,31 @@
+# Rendered with: kubectl kustomize deploy/k8s/overlays/eks | envsubst  (ECR, MSK_BOOTSTRAP, S3_BUCKET, REGION)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+  - topic-init-job.yaml
+  - envoy-public.yaml
+configMapGenerator:
+  - name: app-env
+    behavior: merge
+    literals:
+      - CASSANDRA_HOSTS=cassandra.${REGION}.amazonaws.com
+      - CASSANDRA_AUTH=sigv4
+      - CASSANDRA_TLS=true
+      - CASSANDRA_TLS_CA=/etc/ssl/sf-class2-root.crt
+      - KAFKA_BROKERS=${MSK_BOOTSTRAP}
+      - KAFKA_SASL=aws-msk-iam
+      - SINK_S3_BUCKET=${S3_BUCKET}
+      - AWS_REGION=${REGION}
+      - TOPIC_PARTITIONS=3
+generatorOptions:
+  disableNameSuffixHash: true
+images:
+  - { name: elb/accounts, newName: "${ECR}/accounts", newTag: latest }
+  - { name: elb/ledger, newName: "${ECR}/ledger", newTag: latest }
+  - { name: elb/transfers, newName: "${ECR}/transfers", newTag: latest }
+  - { name: elb/notifications, newName: "${ECR}/notifications", newTag: latest }
+  - { name: elb/analytics-sink, newName: "${ECR}/analytics-sink", newTag: latest }
+  - { name: elb/topic-init, newName: "${ECR}/topic-init", newTag: latest }
+  - { name: elb/web, newName: "${ECR}/web", newTag: latest }
+  - { name: elb/envoy, newName: "${ECR}/envoy", newTag: latest }

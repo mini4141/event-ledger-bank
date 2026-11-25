@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata: { name: topic-init, namespace: bank }
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      serviceAccountName: bank
+      restartPolicy: OnFailure
+      containers:
+        - name: topic-init
+          image: elb/topic-init:dev
+          envFrom: [{ configMapRef: { name: app-env } }]

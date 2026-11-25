@@ -25,8 +25,8 @@ type store struct{ db *gocql.Session }
 
 func (s store) Claim(ctx context.Context, key, id string) (bool, transfer.Record, error) {
 	prev := map[string]any{}
-	applied, err := s.db.Query(`INSERT INTO transfers_by_idempotency_key (idempotency_key, transfer_id, status, created_at) VALUES (?, ?, 'PENDING', toTimestamp(now())) IF NOT EXISTS`,
-		key, id).WithContext(ctx).MapScanCAS(prev)
+	applied, err := s.db.Query(`INSERT INTO transfers_by_idempotency_key (idempotency_key, transfer_id, status, created_at) VALUES (?, ?, 'PENDING', ?) IF NOT EXISTS`,
+		key, id, time.Now().UTC()).WithContext(ctx).MapScanCAS(prev)
 	if err != nil || applied {
 		return applied, transfer.Record{}, err
 	}

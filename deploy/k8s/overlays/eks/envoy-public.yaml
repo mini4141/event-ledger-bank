@@ -1,0 +1,14 @@
+# Only the edge port is public (NLB). The mesh and admin ports stay cluster-internal.
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy-public
+  namespace: bank
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: Project=event-ledger-bank,Ephemeral=true,ManagedBy=kubernetes,Owner=alvieirvansyah
+spec:
+  type: LoadBalancer
+  selector: { app: envoy }
+  ports:
+    - { name: edge, port: 80, targetPort: edge }

@@ -1,0 +1,11 @@
+output "region" { value = var.region }
+output "cluster_name" { value = aws_eks_cluster.this.name }
+output "ecr_registry" { value = "${local.account_id}.dkr.ecr.${var.region}.amazonaws.com/${var.name}" }
+output "msk_cluster_arn" { value = aws_msk_serverless_cluster.this.arn }
+output "keyspaces_keyspace" { value = aws_keyspaces_keyspace.bank.name }
+output "data_bucket" { value = aws_s3_bucket.data.bucket }
+output "athena_bucket" { value = aws_s3_bucket.athena.bucket }
+output "athena_workgroup" { value = aws_athena_workgroup.bank.name }
+output "glue_database" { value = aws_glue_catalog_database.bank.name }
+output "vpc_id" { value = aws_vpc.main.id }
+output "eks_log_group" { value = aws_cloudwatch_log_group.eks.name }

@@ -68,8 +68,8 @@ func (s *server) Post(ctx context.Context, r *bankv1.PostRequest) (*bankv1.PostR
 	}
 	// Idempotency marker so an Envoy retry cannot double-post.
 	prev := map[string]any{}
-	applied, err := s.db.Query(`INSERT INTO postings_by_id (posting_id, status, created_at) VALUES (?, 'POSTING', toTimestamp(now())) IF NOT EXISTS`,
-		r.PostingId).WithContext(ctx).MapScanCAS(prev)
+	applied, err := s.db.Query(`INSERT INTO postings_by_id (posting_id, status, created_at) VALUES (?, 'POSTING', ?) IF NOT EXISTS`,
+		r.PostingId, time.Now().UTC()).WithContext(ctx).MapScanCAS(prev)
 	if err != nil {
 		return nil, status.Error(codes.Unavailable, err.Error())
 	}

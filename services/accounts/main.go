@@ -125,8 +125,8 @@ func (s *server) Deposit(ctx context.Context, r *bankv1.DepositRequest) (*bankv1
 }
 
 func (s *server) ensureFundingAccount() error {
-	return s.db.Query(`INSERT INTO accounts (account_id, customer_id, currency, balance_minor, version, created_at) VALUES (?, ?, 'GBP', 0, 0, toTimestamp(now())) IF NOT EXISTS`,
-		bank.FundingAccountID, bank.FundingAccountID).Exec()
+	return s.db.Query(`INSERT INTO accounts (account_id, customer_id, currency, balance_minor, version, created_at) VALUES (?, ?, 'GBP', 0, 0, ?) IF NOT EXISTS`,
+		bank.FundingAccountID, bank.FundingAccountID, time.Now().UTC()).Exec()
 }
 
 func main() {
